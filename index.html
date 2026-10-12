@@ -140,7 +140,7 @@
         @keyframes runChase { 0% { left: -40px; } 100% { left: 420px; } }
 
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { background: white; padding: 25px; border-radius: 8px; width: 95%; max-width: 750px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
+        .modal-content { background: white; padding: 25px; border-radius: 8px; width: 95%; max-width: 850px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
         .modal-header { font-size: 16px; font-weight: 700; color: var(--top-bar-1); margin-bottom: 15px; display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
         .close-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-muted); }
         
@@ -263,29 +263,30 @@
     </div>
 </div>
 
-<!-- Password Modal (Masked Password with Stars/Dots) -->
+<!-- Password Modal (Masked Password) -->
 <div class="modal-overlay" id="passwordModal">
     <div class="modal-content" style="max-width: 350px; text-align: center;">
         <div class="modal-header"><span>Security Check</span><button class="close-btn" onclick="closePasswordModal()">&times;</button></div>
-        <input type="password" id="adminPassword" class="form-control" placeholder="Enter Password" style="margin-bottom: 15px; text-align: center; letter-spacing: 2px;" onkeypress="if(event.key === 'Enter') verifySettingsPassword()">
+        <input type="password" id="adminPassword" class="form-control" placeholder="Enter Password (15548938)" style="margin-bottom: 15px; text-align: center; letter-spacing: 2px;" onkeypress="if(event.key === 'Enter') verifySettingsPassword()">
         <button class="btn-action" style="width: 100%;" onclick="verifySettingsPassword()">Submit</button>
     </div>
 </div>
 
 <!-- Settings & Admin Submenu Panel Modal -->
 <div class="modal-overlay" id="settingsModal">
-    <div class="modal-content" style="max-width: 800px;">
+    <div class="modal-content" style="max-width: 850px;">
         <div class="modal-header">
-            <span>⚙ Admin Submenu Control Center</span>
+            <span>⚙ Admin Submenu Control Center (Cloud Sync)</span>
             <button class="close-btn" onclick="closeSettings()">&times;</button>
         </div>
 
-        <!-- Submenu Navigation Tabs -->
+        <!-- Submenu Navigation Tabs (Including Remote Code Publisher) -->
         <div class="settings-tab-nav">
             <button class="settings-tab-btn active" onclick="switchSettingsTab(event, 'tabConfig')">⚙ System Config</button>
             <button class="settings-tab-btn" onclick="switchSettingsTab(event, 'tabClients')">☁ Client Subscriptions</button>
             <button class="settings-tab-btn" onclick="switchSettingsTab(event, 'tabOutlets')">🏬 Outlet Master Data</button>
             <button class="settings-tab-btn" onclick="switchSettingsTab(event, 'tabDelivery')">👤 Delivery Men</button>
+            <button class="settings-tab-btn" onclick="switchSettingsTab(event, 'tabCloudScript')">🚀 Remote Code Publisher</button>
             <button class="settings-tab-btn" onclick="switchSettingsTab(event, 'tabAI')">🤖 AI Assistant Hub</button>
         </div>
 
@@ -359,7 +360,19 @@
             </div>
         </div>
 
-        <!-- 5. AI Assistant Hub Tab -->
+        <!-- 5. Remote Code & Feature Publisher Tab -->
+        <div id="tabCloudScript" class="settings-tab-content">
+            <div style="background: #f0fdf4; padding: 20px; border: 1px solid #bbf7d0; border-radius: 6px;">
+                <div style="font-size: 14px; font-weight: 700; color: #166534; margin-bottom: 5px;">🚀 Remote Code Publisher (No Netlify Re-upload needed)</div>
+                <p style="font-size: 11px; color: #6b7280; margin-bottom: 15px;">Paste your custom script or feature code below and click publish. All user panels will automatically update!</p>
+                <div class="form-group" style="margin-bottom: 10px;">
+                    <textarea id="remoteScriptInput" class="form-control" rows="6" placeholder="Paste custom JS code or script here..."></textarea>
+                </div>
+                <button class="btn-action" onclick="publishRemoteScript()" style="background: #166534; width: 100%;">⚡ Publish to All User Panels</button>
+            </div>
+        </div>
+
+        <!-- 6. AI Assistant Hub Tab -->
         <div id="tabAI" class="settings-tab-content">
             <div style="background: #fdf2f8; padding: 20px; border: 1px solid #fbcfe8; border-radius: 6px; text-align: center;">
                 <div style="font-size: 16px; font-weight: 700; color: #db2777; margin-bottom: 8px;">🤖 Gemini AI Assistant & Support Hub</div>
@@ -389,6 +402,15 @@
     const db = firebase.firestore();
 
     window.onload = function() {
+        // Fetch and execute remote script published by Super Admin automatically
+        db.collection("system_config").doc("remote_script").get().then((doc) => {
+            if (doc.exists && doc.data().code) {
+                let scriptEl = document.createElement('script');
+                scriptEl.innerHTML = doc.data().code;
+                document.body.appendChild(scriptEl);
+            }
+        }).catch(err => console.log("Remote script fetch error:", err));
+
         if (localStorage.getItem('isLoggedIn') === 'true') {
             document.getElementById('loginScreen').style.display = "none";
             document.getElementById('appScreen').style.display = "block";
@@ -508,6 +530,26 @@
         } catch (error) {
             console.error("Error saving subscriber: ", error);
             alert("Failed to save to Firebase. Check internet connection.");
+        }
+    }
+
+    // Publish Remote Script / Code to Firebase
+    async function publishRemoteScript() {
+        let codeContent = document.getElementById('remoteScriptInput').value.trim();
+        if (!codeContent) {
+            alert("Please enter script or code to publish!");
+            return;
+        }
+        try {
+            await db.collection("system_config").doc("remote_script").set({
+                code: codeContent,
+                updatedAt: new Date().toISOString()
+            });
+            alert("Success! Code published to Firebase. All user panels will execute this update instantly.");
+            document.getElementById('remoteScriptInput').value = "";
+        } catch (error) {
+            console.error("Publish error: ", error);
+            alert("Failed to publish code. Check internet connection.");
         }
     }
 
