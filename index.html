@@ -263,7 +263,7 @@
     </div>
 </div>
 
-<!-- Password Modal (Masked Password Type) -->
+<!-- Password Modal -->
 <div class="modal-overlay" id="passwordModal">
     <div class="modal-content" style="max-width: 350px; text-align: center;">
         <div class="modal-header"><span>Security Check</span><button class="close-btn" onclick="closePasswordModal()">&times;</button></div>
@@ -276,14 +276,15 @@
 <div class="modal-overlay" id="settingsModal">
     <div class="modal-content" style="max-width: 850px;">
         <div class="modal-header">
-            <span>⚙ Admin Submenu Control Center (Cloud Sync)</span>
+            <span>⚙ Admin Submenu Control Center (Multi-House Management)</span>
             <button class="close-btn" onclick="closeSettings()">&times;</button>
         </div>
 
-        <!-- Submenu Navigation Tabs (Super Admin Only) -->
+        <!-- Submenu Navigation Tabs -->
         <div class="settings-tab-nav" id="adminTabsNav">
             <button class="settings-tab-btn active" onclick="switchSettingsTab(event, 'tabConfig')">⚙ System Config</button>
-            <button class="settings-tab-btn" onclick="switchSettingsTab(event, 'tabClients')">☁ Client Subscriptions</button>
+            <button class="settings-tab-btn" onclick="switchSettingsTab(event, 'tabClientMgmt')">🏢 Client Management</button>
+            <button class="settings-tab-btn" onclick="switchSettingsTab(event, 'tabClients')">☁ Subscription Manager</button>
             <button class="settings-tab-btn" onclick="switchSettingsTab(event, 'tabOutlets')">🏬 Outlet Master Data</button>
             <button class="settings-tab-btn" onclick="switchSettingsTab(event, 'tabDelivery')">👤 Delivery Men</button>
             <button class="settings-tab-btn" onclick="switchSettingsTab(event, 'tabCloudScript')">🚀 Remote Code Publisher</button>
@@ -307,40 +308,62 @@
             </div>
         </div>
 
-        <!-- 2. Client Subscriptions Tab -->
-        <div id="tabClients" class="settings-tab-content">
-            <div style="background: #eff6ff; padding: 20px; border: 1px solid #bfdbfe; border-radius: 6px;">
-                <div style="font-size: 14px; font-weight: 700; color: var(--top-bar-1); margin-bottom: 10px;">☁ Admin: Create / Update Client Subscription</div>
-                <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 15px;">Add or update client credentials directly into Firebase database.</p>
-                <div style="display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap;">
-                    <div class="form-group"><label>Client User ID</label><input type="text" id="newSubUser" class="form-control" placeholder="e.g. client_shop"></div>
-                    <div class="form-group"><label>Password</label><input type="password" id="newSubPass" class="form-control" placeholder="e.g. 1234"></div>
-                    <div class="form-group"><label>Expiry Date</label><input type="date" id="newSubExpiry" class="form-control"></div>
-                    <button class="btn-action" onclick="saveSubscriberToFirebase()" style="height: 33px; background: #10b981;">Save Client</button>
+        <!-- 2. Client Management & Target House Switcher Tab -->
+        <div id="tabClientMgmt" class="settings-tab-content">
+            <div style="background: #f0fdf4; padding: 20px; border: 1px solid #bbf7d0; border-radius: 6px;">
+                <div style="font-size: 14px; font-weight: 700; color: #166534; margin-bottom: 8px;">🏢 Select Target Client House (Multi-House Control)</div>
+                <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 15px;">Switch active client house to manage or upload their specific CSV databases.</p>
+                <div style="display: flex; gap: 15px; align-items: flex-end;">
+                    <div class="form-group">
+                        <label>Select House / Client ID</label>
+                        <select id="targetClientSelect" class="form-control" onchange="switchTargetClient(this.value)">
+                            <option value="habiganj">Habiganj House</option>
+                            <option value="moulvibazar">Moulvibazar House</option>
+                            <option value="kulaura">Kulaura House</option>
+                            <option value="brahmanbaria">Brahmanbaria House</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Active Status</label>
+                        <div id="activeClientDisplay" style="font-weight:bold; color:#166534; padding: 8px 0;">Habiganj House Active</div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- 3. Outlet Master Data Tab -->
+        <!-- 3. Client Subscriptions Tab -->
+        <div id="tabClients" class="settings-tab-content">
+            <div style="background: #eff6ff; padding: 20px; border: 1px solid #bfdbfe; border-radius: 6px;">
+                <div style="font-size: 14px; font-weight: 700; color: var(--top-bar-1); margin-bottom: 10px;">☁ New Client ID Creation & Expiry</div>
+                <div style="display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap;">
+                    <div class="form-group"><label>Client User ID</label><input type="text" id="newSubUser" class="form-control" placeholder="e.g. habiganj_house"></div>
+                    <div class="form-group"><label>Password</label><input type="password" id="newSubPass" class="form-control" placeholder="Password"></div>
+                    <div class="form-group"><label>Expiry Date</label><input type="date" id="newSubExpiry" class="form-control"></div>
+                    <button class="btn-action" onclick="saveSubscriberToFirebase()" style="height: 33px; background: #10b981;">Create Client</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Outlet Master Data Tab -->
         <div id="tabOutlets" class="settings-tab-content">
             <div style="background: #fdfdfd; padding: 20px; border: 1px dashed var(--border-color); border-radius: 6px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                    <div style="font-size: 14px; font-weight: 700; color: var(--top-bar-1);">🏬 Outlet / Shop Master Data (CSV)</div>
+                    <div style="font-size: 14px; font-weight: 700; color: var(--top-bar-1);">🏬 Outlet / Shop Master Data (CSV for Selected Client)</div>
                     <div>
                         <span style="font-size:11px; font-weight:bold; color:#047857; margin-right:10px;" id="outletCountDisplay">0 Outlets Loaded</span>
                         <button class="btn-upload" onclick="document.getElementById('outletCsvInput').click()">📥 Upload Outlets (CSV)</button>
                         <input type="file" id="outletCsvInput" accept=".csv" style="display:none;" onchange="uploadOutletCSV(event)">
                     </div>
                 </div>
-                <div style="font-size: 11px; color: var(--text-muted);">* Upload a CSV file. Column A: Outlet Code, Column B: Shop Name.</div>
+                <div style="font-size: 11px; color: var(--text-muted);">* Upload CSV file for the active selected client house.</div>
             </div>
         </div>
 
-        <!-- 4. Delivery Men Tab -->
+        <!-- 5. Delivery Men Tab -->
         <div id="tabDelivery" class="settings-tab-content">
             <div style="background: #ffffff; padding: 15px; border: 1px solid var(--border-color); border-radius: 6px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                    <div style="font-size: 14px; font-weight: 700; color: var(--top-bar-1);">👤 Delivery Man Management</div>
+                    <div style="font-size: 14px; font-weight: 700; color: var(--top-bar-1);">👤 Delivery Man Management (For Selected Client)</div>
                     <button class="btn-upload" style="background: var(--top-bar-2);" onclick="document.getElementById('dmCsvInput').click()">📥 Upload DM List (CSV)</button>
                     <input type="file" id="dmCsvInput" accept=".csv" style="display:none;" onchange="uploadDMCSV(event)">
                 </div>
@@ -360,11 +383,11 @@
             </div>
         </div>
 
-        <!-- 5. Remote Code & Feature Publisher Tab -->
+        <!-- 6. Remote Code & Feature Publisher Tab -->
         <div id="tabCloudScript" class="settings-tab-content">
             <div style="background: #f0fdf4; padding: 20px; border: 1px solid #bbf7d0; border-radius: 6px;">
                 <div style="font-size: 14px; font-weight: 700; color: #166534; margin-bottom: 5px;">🚀 Remote Code Publisher (Super Admin Only)</div>
-                <p style="font-size: 11px; color: #6b7280; margin-bottom: 15px;">Paste your custom script or feature code below and click publish. All user panels will automatically update!</p>
+                <p style="font-size: 11px; color: #6b7280; margin-bottom: 15px;">Paste custom script or feature code below to publish to all client panels.</p>
                 <div class="form-group" style="margin-bottom: 10px;">
                     <textarea id="remoteScriptInput" class="form-control" rows="6" placeholder="Paste custom JS code or script here..."></textarea>
                 </div>
@@ -372,11 +395,11 @@
             </div>
         </div>
 
-        <!-- 6. AI Assistant Hub Tab -->
+        <!-- 7. AI Assistant Hub Tab -->
         <div id="tabAI" class="settings-tab-content">
             <div style="background: #fdf2f8; padding: 20px; border: 1px solid #fbcfe8; border-radius: 6px; text-align: center;">
                 <div style="font-size: 16px; font-weight: 700; color: #db2777; margin-bottom: 8px;">🤖 Gemini AI Assistant & Support Hub</div>
-                <p style="font-size: 12px; color: #6b7280; margin-bottom: 15px;">Need new features or code changes? Click below to chat directly with Gemini AI for instant support.</p>
+                <p style="font-size: 12px; color: #6b7280; margin-bottom: 15px;">Need new features or code changes? Click below to chat directly with Gemini AI.</p>
                 <a href="https://gemini.google.com" target="_blank" class="btn-action" style="display: inline-block; background: #db2777; text-decoration: none; padding: 10px 20px;">💬 Open Gemini AI Assistant</a>
             </div>
         </div>
@@ -387,7 +410,7 @@
 <iframe id="printFrame" style="display:none;"></iframe>
 
 <script>
-    /* ------------- 0. Firebase Setup & Super User Auth Logic ------------- */
+    /* ------------- 0. Firebase Setup & Multi-House Auth Logic ------------- */
     const firebaseConfig = {
       apiKey: "AIzaSyANrFEKpZyEDAGEKBxhYENuZlPt8B-WAgk",
       authDomain: "fir-smart-mdm.firebaseapp.com",
@@ -401,8 +424,10 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
+    let activeClientKey = localStorage.getItem('activeClientKey') || "habiganj";
+
     window.onload = function() {
-        // Fetch and execute remote script published by Super Admin automatically
+        // Fetch remote script
         db.collection("system_config").doc("remote_script").get().then((doc) => {
             if (doc.exists && doc.data().code) {
                 let scriptEl = document.createElement('script');
@@ -417,10 +442,12 @@
             let currentUser = localStorage.getItem('currentUser') || "";
             let days = localStorage.getItem('subDays') || 0;
             if (currentUser === "linux@ubuntu" || days == '9999') {
-                document.getElementById('subRemaining').innerText = `👑 Super Admin Access`;
+                document.getElementById('subRemaining').innerText = `👑 Super Admin Access (${activeClientKey.toUpperCase()})`;
             } else {
                 document.getElementById('subRemaining').innerText = `⏳ Sub: ${days} Days Left`;
+                activeClientKey = currentUser; // Client sees only their own ID data
             }
+            loadClientDataStorage();
         }
     };
 
@@ -444,6 +471,7 @@
             document.getElementById('subRemaining').innerText = `👑 Super Admin Access`;
             document.getElementById('loginScreen').style.display = "none";
             document.getElementById('appScreen').style.display = "block";
+            loadClientDataStorage();
             return;
         }
 
@@ -462,7 +490,7 @@
                     today.setHours(0,0,0,0);
 
                     if (today > expiry) {
-                        msgBox.innerHTML = `❌ Subscription Expired on ${data.expiryDate}.<br><br>Please contact Developer (Khairul Hasan) to renew.`;
+                        msgBox.innerHTML = `❌ Subscription Expired on ${data.expiryDate}.`;
                         msgBox.style.color = "#dc2626";
                     } else {
                         let diffTime = Math.abs(expiry - today);
@@ -472,21 +500,23 @@
                         localStorage.setItem('isLoggedIn', 'true');
                         localStorage.setItem('currentUser', user);
                         localStorage.setItem('subDays', diffDays);
+                        activeClientKey = user; // Lock to specific client
 
                         document.getElementById('loginScreen').style.display = "none";
                         document.getElementById('appScreen').style.display = "block";
+                        loadClientDataStorage();
                     }
                 } else {
                     msgBox.innerHTML = "❌ Incorrect Password!";
                     msgBox.style.color = "#dc2626";
                 }
             } else {
-                msgBox.innerHTML = "❌ User ID not found in system!";
+                msgBox.innerHTML = "❌ User ID not found!";
                 msgBox.style.color = "#dc2626";
             }
         } catch (error) {
             console.error("Firebase Error: ", error);
-            msgBox.innerHTML = "❌ Database Connection Error! Check internet.";
+            msgBox.innerHTML = "❌ Connection Error!";
             msgBox.style.color = "#dc2626";
         } finally {
             loginBtn.innerHTML = "Log In";
@@ -513,44 +543,25 @@
         let pass = document.getElementById('newSubPass').value.trim();
         let expiry = document.getElementById('newSubExpiry').value.trim();
 
-        if (!user || !pass || !expiry) {
-            alert("Please fill in User ID, Password, and Expiry Date!");
-            return;
-        }
+        if (!user || !pass || !expiry) { alert("Fill in all fields!"); return; }
 
         try {
-            await db.collection("subscribers").doc(user).set({
-                password: pass,
-                expiryDate: expiry
-            });
-            alert(`Success! Client "${user}" has been saved/updated in Firebase.`);
+            await db.collection("subscribers").doc(user).set({ password: pass, expiryDate: expiry });
+            alert(`Success! Client ID "${user}" created successfully.`);
             document.getElementById('newSubUser').value = "";
             document.getElementById('newSubPass').value = "";
             document.getElementById('newSubExpiry').value = "";
-        } catch (error) {
-            console.error("Error saving subscriber: ", error);
-            alert("Failed to save to Firebase. Check internet connection.");
-        }
+        } catch (error) { alert("Failed to save to Firebase."); }
     }
 
-    // Publish Remote Script / Code to Firebase
     async function publishRemoteScript() {
         let codeContent = document.getElementById('remoteScriptInput').value.trim();
-        if (!codeContent) {
-            alert("Please enter script or code to publish!");
-            return;
-        }
+        if (!codeContent) return;
         try {
-            await db.collection("system_config").doc("remote_script").set({
-                code: codeContent,
-                updatedAt: new Date().toISOString()
-            });
-            alert("Success! Code published to Firebase. All user panels will execute this update instantly.");
+            await db.collection("system_config").doc("remote_script").set({ code: codeContent, updatedAt: new Date().toISOString() });
+            alert("Success! Code published to all user panels.");
             document.getElementById('remoteScriptInput').value = "";
-        } catch (error) {
-            console.error("Publish error: ", error);
-            alert("Failed to publish code. Check internet connection.");
-        }
+        } catch (error) { alert("Failed to publish."); }
     }
 
     function toggleMenuDropdown(event) {
@@ -570,8 +581,7 @@
         let uploadPanel = document.getElementById('uploadPanel');
         uploadPanel.style.display = "block";
         document.getElementById('resultsContainer').innerHTML = "";
-        fileBuffers = []; 
-        groupedMemos = {};
+        fileBuffers = []; groupedMemos = {};
         document.getElementById('fileCount').innerText = "";
         document.getElementById('pdfInput').value = "";
     }
@@ -582,29 +592,42 @@
         document.getElementById('uploadPanel').style.display = "none";
         document.getElementById('loading').style.display = "none";
         document.getElementById('resultsContainer').innerHTML = "";
-        fileBuffers = []; 
-        groupedMemos = {};
+        fileBuffers = []; groupedMemos = {};
     }
 
-    /* ------------- 1. Init & Config ------------- */
+    /* ------------- 1. Init & Multi-House Client Data Management ------------- */
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
     function updateClock() { document.getElementById('liveClock').innerText = new Date().toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'medium' }); }
     setInterval(updateClock, 1000); updateClock();
 
-    let savedHouseName = localStorage.getItem('houseName') || "J & J Enterprise";
+    let savedHouseName = "J & J Enterprise";
     let minPrintAmount = parseFloat(localStorage.getItem('minPrintAmount')) || 300;
     document.getElementById('displayHouseName').innerText = savedHouseName;
 
-    const defaultDeliveryMap = { "86": "AKANTO SUTRADHAR", "7": "Imamul Mursalin", "13": "Md Asraful Islam", "30": "MD NURUL ISLAM ROBEL", "47": "Rasel Mia" };
-    
-    let currentDeliveryMap = JSON.parse(localStorage.getItem('deliveryMap'));
-    if (!currentDeliveryMap) { currentDeliveryMap = { ...defaultDeliveryMap }; localStorage.setItem('deliveryMap', JSON.stringify(currentDeliveryMap)); }
-    
-    let currentOutletMap = JSON.parse(localStorage.getItem('outletMap')) || {};
-    document.getElementById('outletCountDisplay').innerText = Object.keys(currentOutletMap).length + " Outlets Loaded";
-
+    let currentDeliveryMap = {};
+    let currentOutletMap = {};
     let fileBuffers = []; let groupedMemos = {}; 
+
+    function loadClientDataStorage() {
+        let dmData = localStorage.getItem(`dmMap_${activeClientKey}`);
+        let outletData = localStorage.getItem(`outletMap_${activeClientKey}`);
+
+        currentDeliveryMap = dmData ? JSON.parse(dmData) : { "86": "AKANTO SUTRADHAR", "7": "Imamul Mursalin" };
+        currentOutletMap = outletData ? JSON.parse(outletData) : {};
+        
+        let countEl = document.getElementById('outletCountDisplay');
+        if(countEl) countEl.innerText = Object.keys(currentOutletMap).length + " Outlets Loaded";
+        renderSettingsList();
+    }
+
+    function switchTargetClient(clientKey) {
+        activeClientKey = clientKey;
+        localStorage.setItem('activeClientKey', activeClientKey);
+        document.getElementById('activeClientDisplay').innerText = `${clientKey.toUpperCase()} House Active`;
+        loadClientDataStorage();
+        alert(`Switched active management to: ${clientKey.toUpperCase()} House`);
+    }
 
     function bengaliToEnglish(str) {
         const bnDigits = {'০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'7','৮':'8','৯':'9'};
@@ -631,8 +654,8 @@
         reader.onload = function(e) {
             let data = processCSVData(e.target.result);
             currentDeliveryMap = { ...currentDeliveryMap, ...data };
-            localStorage.setItem('deliveryMap', JSON.stringify(currentDeliveryMap));
-            renderSettingsList(); alert(Object.keys(data).length + " Delivery Men loaded and merged successfully!");
+            localStorage.setItem(`dmMap_${activeClientKey}`, JSON.stringify(currentDeliveryMap));
+            renderSettingsList(); alert(`${activeClientKey.toUpperCase()}: ${Object.keys(data).length} Delivery Men loaded!`);
         };
         reader.readAsText(file, 'UTF-8');
         event.target.value = "";
@@ -644,22 +667,21 @@
         reader.onload = function(e) {
             let data = processCSVData(e.target.result);
             currentOutletMap = { ...currentOutletMap, ...data };
-            localStorage.setItem('outletMap', JSON.stringify(currentOutletMap));
+            localStorage.setItem(`outletMap_${activeClientKey}`, JSON.stringify(currentOutletMap));
             document.getElementById('outletCountDisplay').innerText = Object.keys(currentOutletMap).length + " Outlets Loaded";
-            alert(Object.keys(data).length + " Outlet Codes mapped successfully!");
+            alert(`${activeClientKey.toUpperCase()}: ${Object.keys(data).length} Outlets Mapped!`);
         };
         reader.readAsText(file, 'UTF-8');
         event.target.value = "";
     }
 
-    function saveHouseName() { savedHouseName = document.getElementById('houseNameInput').value.trim(); localStorage.setItem('houseName', savedHouseName); document.getElementById('displayHouseName').innerText = savedHouseName; alert("House Name Saved!"); }
+    function saveHouseName() { savedHouseName = document.getElementById('houseNameInput').value.trim(); document.getElementById('displayHouseName').innerText = savedHouseName; alert("House Name Saved!"); }
     function saveMinAmount() { let val = parseFloat(document.getElementById('minAmountInput').value); if(!isNaN(val) && val >= 0) { minPrintAmount = val; localStorage.setItem('minPrintAmount', val); alert("Minimum Amount Updated!"); } }
     
-    // Check Settings Access: Super Admin bypasses password, client accounts need password 15548938
     function checkSettingsAccess() {
         let currentUser = localStorage.getItem('currentUser') || "";
         if (currentUser === "linux@ubuntu") {
-            openSettingsModal(true); // Super Admin (Full Access)
+            openSettingsModal(true); // Super Admin Full Access
         } else {
             document.getElementById('passwordModal').style.display = "flex";
             document.getElementById('adminPassword').value = "";
@@ -672,42 +694,29 @@
     function verifySettingsPassword() {
         if (document.getElementById('adminPassword').value === "15548938") {
             closePasswordModal();
-            openSettingsModal(false); // Client User (Restricted Access)
-        } else {
-            alert("Incorrect Password!");
-        }
+            openSettingsModal(false); // Client User Restricted
+        } else { alert("Incorrect Password!"); }
     }
 
     function openSettingsModal(isSuperAdmin) { 
         document.getElementById('settingsModal').style.display = "flex"; 
-        
         let navButtons = document.querySelectorAll('.settings-tab-btn');
-        let tabContents = document.querySelectorAll('.settings-tab-content');
 
         if (isSuperAdmin) {
-            // Super User gets all tabs
             navButtons.forEach(btn => btn.style.display = "block");
             switchSettingsTab(null, 'tabConfig');
         } else {
-            // Client User gets ONLY Skipped Memos view info (or System config basic) and restricted tabs hidden
             navButtons.forEach((btn, index) => {
-                if (index === 0) {
-                    btn.style.display = "block"; // Only config/basic info
-                    btn.click();
-                } else {
-                    btn.style.display = "none"; // Hide client creation, outlet data, DM data, and AI/Remote code tabs
-                }
+                if (index === 0) { btn.style.display = "block"; btn.click(); } 
+                else { btn.style.display = "none"; }
             });
         }
-
-        document.getElementById('houseNameInput').value = savedHouseName; 
         document.getElementById('minAmountInput').value = minPrintAmount;
         renderSettingsList(); 
     }
     
     function closeSettings() { document.getElementById('settingsModal').style.display = "none"; }
 
-    // Settings Submenu Tab Switching
     function switchSettingsTab(event, tabId) {
         let contents = document.querySelectorAll('.settings-tab-content');
         contents.forEach(c => c.classList.remove('active'));
@@ -715,19 +724,15 @@
         buttons.forEach(b => b.classList.remove('active'));
 
         document.getElementById(tabId).classList.add('active');
-        if (event && event.currentTarget) {
-            event.currentTarget.classList.add('active');
-        } else {
-            document.querySelector('.settings-tab-btn').classList.add('active');
-        }
+        if (event && event.currentTarget) { event.currentTarget.classList.add('active'); } 
+        else { document.querySelector('.settings-tab-btn').classList.add('active'); }
     }
     
     function openReportModal() { document.getElementById('reportModal').style.display = "flex"; }
     function closeReportModal() { document.getElementById('reportModal').style.display = "none"; }
     
     function renderSettingsList() {
-        const tbody = document.getElementById('dmListBody'); 
-        if(!tbody) return;
+        const tbody = document.getElementById('dmListBody'); if(!tbody) return;
         tbody.innerHTML = "";
         Object.keys(currentDeliveryMap).sort((a,b)=>parseInt(a)-parseInt(b)).forEach(code => {
             tbody.innerHTML += `<tr><td><b>${code}</b></td><td>${currentDeliveryMap[code]}</td><td style="text-align:right;"><button onclick="deleteDeliveryMan('${code}')" style="color:red; background:none; border:none; cursor:pointer;">Delete</button></td></tr>`;
@@ -735,9 +740,19 @@
     }
     function addDeliveryMan() {
         const code = document.getElementById('newCode').value.trim(); const name = document.getElementById('newName').value.trim();
-        if (code && name) { currentDeliveryMap[bengaliToEnglish(code)] = name; localStorage.setItem('deliveryMap', JSON.stringify(currentDeliveryMap)); document.getElementById('newCode').value = ""; document.getElementById('newName').value = ""; renderSettingsList(); }
+        if (code && name) { 
+            currentDeliveryMap[bengaliToEnglish(code)] = name; 
+            localStorage.setItem(`dmMap_${activeClientKey}`, JSON.stringify(currentDeliveryMap)); 
+            document.getElementById('newCode').value = ""; document.getElementById('newName').value = ""; renderSettingsList(); 
+        }
     }
-    function deleteDeliveryMan(code) { if(confirm('Delete Code '+code+'?')){ delete currentDeliveryMap[code]; localStorage.setItem('deliveryMap', JSON.stringify(currentDeliveryMap)); renderSettingsList(); } }
+    function deleteDeliveryMan(code) { 
+        if(confirm('Delete Code '+code+'?')){ 
+            delete currentDeliveryMap[code]; 
+            localStorage.setItem(`dmMap_${activeClientKey}`, JSON.stringify(currentDeliveryMap)); 
+            renderSettingsList(); 
+        } 
+    }
 
     const dropZone = document.getElementById('dropZone'); const fileInput = document.getElementById('pdfInput');
     if(dropZone) {
@@ -760,7 +775,7 @@
 
         try {
             for (let f = 0; f < files.length; f++) {
-                document.getElementById('loadingText').innerText = `Scanning File ${f+1} of ${files.length}... matching MDM database`;
+                document.getElementById('loadingText').innerText = `Scanning File ${f+1} of ${files.length}... matching ${activeClientKey.toUpperCase()} MDM`;
                 let fileCode = files[f].name.replace(/\.[^/.]+$/, "").trim();
                 let engCode = bengaliToEnglish(fileCode);
                 let deliveryMan = currentDeliveryMap[engCode] || `Unknown (Code: ${engCode})`;
