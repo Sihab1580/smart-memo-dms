@@ -54,12 +54,10 @@
         .topbar-2 { background: var(--top-bar-2); color: white; height: 40px; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; font-size: 13px; font-weight: 600; box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: relative; z-index: 10; }
         .layout-container { display: flex; height: calc(100vh - 65px); }
 
-        /* Professional Sidebar */
-        .sidebar { width: 90px; background: white; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; padding-top: 10px; z-index: 5; position: relative; overflow-y: auto; }
-        .sidebar-brand { text-align: center; width: 100%; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border-color); }
-        .sidebar-brand img { width: 55px; height: 55px; border-radius: 8px; object-fit: cover; }
+        /* Professional Clean Sidebar (Logo Removed) */
+        .sidebar { width: 90px; background: white; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; padding-top: 15px; z-index: 5; position: relative; overflow-y: auto; }
         
-        .nav-item-wrap { width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 10px; cursor: pointer; padding: 8px 4px; transition: 0.2s; position: relative; }
+        .nav-item-wrap { width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 12px; cursor: pointer; padding: 8px 4px; transition: 0.2s; position: relative; }
         .nav-item-wrap:hover { background: #e0e7ff; }
         .nav-icon { width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; border-radius: 8px; color: var(--top-bar-1); font-size: 20px; font-weight: bold; background: #f8fafc; border: 1px solid #cbd5e1; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
         .nav-label { font-size: 11px; font-weight: 700; color: var(--top-bar-1); margin-top: 5px; text-align: center; }
@@ -158,7 +156,7 @@
         .step-container.active { display: block; animation: smoothFadeIn 0.3s ease-in-out; }
         .step-box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 6px; margin-bottom: 10px; }
 
-        /* Nemo AI Chatbot Widget (Width: 2.5 inch ~ 280px, Height: 6 inch ~ 420px, Bottom: 1.5 inch ~ 55px) */
+        /* Nemo AI Smart Assistant Chatbot Widget (Width: 2.5 inch ~ 280px, Height: 6 inch ~ 420px, Bottom: 1.5 inch ~ 55px) */
         #nemoChatWidget {
             position: fixed; bottom: 55px; right: 25px; width: 280px; height: 420px;
             background: white; border: 1px solid #cbd5e1; border-radius: 10px;
@@ -210,17 +208,19 @@
     </div>
 
     <div class="layout-container">
-        <!-- Professional Sidebar with Icons + Labels Below & Submenu Popovers -->
+        <!-- Professional Sidebar (Logo Removed, Memo Skipper Tool placed right after Reports icon) -->
         <div class="sidebar" id="sidebarNav" onclick="closeAllSubmenus(event)">
             
-            <div class="sidebar-brand">
-                <img src="https://i.ibb.co.com/2s3FhY8/dcode-logo.png" alt="DCODE" onerror="this.src='https://img.icons8.com/color/96/source-code.png'">
-            </div>
-
             <!-- 1. Reports Menu -->
-            <div class="nav-item-wrap" onclick="openReportModal()">
+            <div class="nav-item-wrap" onclick="toggleSubmenu('reportsSubmenu', event)">
                 <div class="nav-icon">📊</div>
                 <div class="nav-label">Reports</div>
+                
+                <div class="nav-submenu-popup" id="reportsSubmenu">
+                    <div class="nav-submenu-header">Reports & Memo Skipper</div>
+                    <div class="nav-submenu-link" onclick="openMemoProcessingQueue()">Memo Skipper Tool <span>&gt;</span></div>
+                    <div class="nav-submenu-link" onclick="openReportModal()">Analytics & Stats <span>&gt;</span></div>
+                </div>
             </div>
 
             <!-- 2. Company Setup Menu with Submenu Popup -->
@@ -230,7 +230,6 @@
                 
                 <div class="nav-submenu-popup" id="setupSubmenu">
                     <div class="nav-submenu-header">Company Setup</div>
-                    <div class="nav-submenu-link" onclick="openMemoProcessingQueue()">Memo Processing <span>&gt;</span></div>
                     <div class="nav-submenu-link" onclick="showWelcomeDashboard()">Distributor Profile <span>&gt;</span></div>
                     <div class="nav-submenu-link" onclick="showWelcomeDashboard()">Price & Promotion <span>&gt;</span></div>
                 </div>
@@ -303,14 +302,14 @@
     </div>
 </div>
 
-<!-- Nemo AI Smart Assistant Chatbot Widget (6 inch height x 2.5 inch width) -->
+<!-- Nemo AI Smart Assistant Chatbot Widget -->
 <div id="nemoChatWidget">
     <div class="nemo-header">
         <span>🤖 Nemo Assistant</span>
         <span style="cursor: pointer; font-size: 14px;" onclick="toggleNemoMinimize()">_</span>
     </div>
     <div class="nemo-body" id="nemoChatBody">
-        <div class="nemo-msg bot">হ্যালো! আমি Nemo। সিস্টেমটি সহজে চালনার জন্য আপনাকে গাইড করতে প্রস্তুত আছি। বলুন, কী জানতে চান?</div>
+        <div class="nemo-msg bot">Hello! I am Nemo. I am here to help you navigate and use the Smart Memo DMS software smoothly. How can I assist you today?</div>
     </div>
     <div class="nemo-footer" id="nemoFooterBox">
         <input type="text" id="nemoInput" class="nemo-input" placeholder="Type here..." onkeypress="if(event.key==='Enter') sendNemoMsg()">
@@ -318,7 +317,7 @@
     </div>
 </div>
 
-<!-- Special Developer Details Modal (With exact phone numbers) -->
+<!-- Special Developer Details Modal -->
 <div class="modal-overlay" id="developerModal">
     <div class="modal-content" style="max-width: 440px; text-align: center; border-top: 5px solid var(--btn-blue);">
         <div class="modal-header">
@@ -331,8 +330,8 @@
             <div style="color: var(--btn-blue); font-weight: 600; font-size: 13px; margin-bottom: 15px;">IT Support Specialist & Software Developer</div>
             <hr style="border: 0; border-top: 1px solid var(--border-color); margin-bottom: 18px;">
             <div style="text-align: left; font-size: 13px; color: var(--text-dark); display: flex; flex-direction: column; gap: 10px; background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                <div>📞 <b>Primary Phone:</b> <a href="tel:01580441506" style="color:#2563eb; text-decoration:none;">০১৫৮০-৪৪১৫০৬</a></div>
-                <div>📱 <b>Alternative Phone:</b> <a href="tel:01410441506" style="color:#2563eb; text-decoration:none;">০১৪১০-৪৪১৫০৬</a></div>
+                <div>📞 <b>Primary Phone:</b> <a href="tel:01580441506" style="color:#2563eb; text-decoration:none;">01580-441506</a></div>
+                <div>📱 <b>Alternative Phone:</b> <a href="tel:01410441506" style="color:#2563eb; text-decoration:none;">01410-441506</a></div>
                 <div>📧 <b>Email:</b> khairulhasansihab@gmail.com</div>
                 <div>🏢 <b>Company:</b> J & J Enterprise (Unilever Distribution)</div>
             </div>
@@ -617,13 +616,13 @@
         body.scrollTop = body.scrollHeight;
 
         setTimeout(() => {
-            let reply = "আমি Nemo! সফটওয়্যারটি কীভাবে সহজে পরিচালনা করবেন তা আমি বলে দিতে পারি। প্রথমে Setup থেকে আপনার হাউজ সিলেক্ট করুন এবং PDF মেমোগুলো আপলোড করে স্ক্যান করুন। প্রোপার্টি বা কোডিংয়ের ব্যাপারগুলো আমার ডোমেইনের বাইরে!";
+            let reply = "Hello! I am Nemo. I can guide you through managing your memos, uploading CSV files, and using the system features efficiently. Feel free to ask about software operations!";
             let lower = txt.toLowerCase();
-            if(lower.includes('hello') || lower.includes('হাই')) reply = "হ্যালো! Smart Memo DMS সিস্টেমে আপনাকে স্বাগতম। আজ কীভাবে সাহায্য করতে পারি?";
-            else if(lower.includes('pdf') || lower.includes('memo') || lower.includes('মেমো') || lower.includes('স্ক্যান')) reply = "PDF স্ক্যান করার জন্য বাম পাশের Setup মেনু ব্যবহার করুন। সেখানে ড্রপজোনে ফাইল ছেড়ে দিয়ে স্ক্যান প্রসেস চালু করতে পারবেন।";
-            else if(lower.includes('print') || lower.includes('প্রিন্ট')) reply = "সঠিকভাবে মেমো ফিল্টার হওয়ার পর 'Execute Print' বাটনে ক্লিক করলেই অটো-স্টিচ হয়ে প্রিন্ট প্রিভিউ চলে আসবে।";
-            else if(lower.includes('code') || lower.includes('coding') || lower.includes('কোডিং') || lower.includes('pass') || lower.includes('password')) reply = "আহা! কোডিং বা সিক্রেট তথ্য তো আমার জানা নেই। তবে সিস্টেমের ডেটা বা সেটিংস কীভাবে পরিচালনা করবেন, সে বিষয়ে আমি পুরোপুরি সাহায্য করতে পারি!";
-            else if(lower.includes('developer') || lower.includes('ডেভেলপার') || lower.includes('শিহাব')) reply = "এই প্রিমিয়াম সিস্টেমটির সফল ডেভেলপার হলেন খাইরুল হাসান শিহাব (01580441506)।";
+            if(lower.includes('hello') || lower.includes('hi')) reply = "Hello! Welcome to Smart Memo DMS. How can I assist you today?";
+            else if(lower.includes('pdf') || lower.includes('memo') || lower.includes('scan')) reply = "To scan PDF memos, navigate to the Reports menu and open the Memo Skipper Tool.";
+            else if(lower.includes('print')) reply = "Once your memos are processed and filtered, click 'Execute Print' to run the auto-stitch engine.";
+            else if(lower.includes('code') || lower.includes('coding') || lower.includes('password') || lower.includes('secret')) reply = "Ah, system backend configurations and secret codes are restricted! My job is strictly to help you navigate and master the software interface.";
+            else if(lower.includes('developer') || lower.includes('shihab') || lower.includes('khairul')) reply = "The brilliant developer behind this system is Khairul Hasan Shihab (01580441506).";
             
             body.innerHTML += `<div class="nemo-msg bot">${reply}</div>`;
             body.scrollTop = body.scrollHeight;
