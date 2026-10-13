@@ -213,22 +213,21 @@
     </div>
 
     <div class="layout-container">
-        <!-- Professional Sidebar (Scrollbar removed, scale fixed) -->
+        <!-- Professional Sidebar with Memo Skipper Button Added in the Marked Slot -->
         <div class="sidebar" id="sidebarNav" onclick="closeAllSubmenus(event)">
             
-            <!-- 1. Reports Menu with Memo Skipper Tool Submenu -->
+            <!-- 1. Reports Menu with Analytics & Stats -->
             <div class="nav-item-wrap" onclick="toggleSubmenu('reportsSubmenu', event)">
                 <div class="nav-icon">📊</div>
                 <div class="nav-label">Reports</div>
                 
                 <div class="nav-submenu-popup" id="reportsSubmenu">
-                    <div class="nav-submenu-header">Reports & Tools</div>
-                    <div class="nav-submenu-link" onclick="openMemoProcessingQueue()">Memo Skipper Tool <span>&gt;</span></div>
+                    <div class="nav-submenu-header">Reports & Analytics</div>
                     <div class="nav-submenu-link" onclick="openReportModal()">Analytics & Stats <span>&gt;</span></div>
                 </div>
             </div>
 
-            <!-- 2. Setup Menu with Single Submenu containing Developer Setup -->
+            <!-- 2. Setup Menu with Developer Setup -->
             <div class="nav-item-wrap" onclick="toggleSubmenu('setupSubmenu', event)">
                 <div class="nav-icon">🏢</div>
                 <div class="nav-label">Setup</div>
@@ -245,7 +244,7 @@
                 <div class="nav-label">Settings</div>
             </div>
 
-            <!-- 4. Account Menu (Renamed from Billing) -->
+            <!-- 4. Account Menu -->
             <div class="nav-item-wrap" onclick="openBillingModal()">
                 <div class="nav-icon" style="color:#10b981;">💳</div>
                 <div class="nav-label">Account</div>
@@ -257,7 +256,13 @@
                 <div class="nav-label">Reload</div>
             </div>
 
-            <!-- 6. Developer Profile Menu -->
+            <!-- 6. Memo Skipper Tool Button (Placed in your exact marked slot) -->
+            <div class="nav-item-wrap" onclick="openMemoProcessingQueue()">
+                <div class="nav-icon" style="color:#ef4444; background:#fef2f2;">⚡</div>
+                <div class="nav-label">Skipper</div>
+            </div>
+
+            <!-- 7. Developer Profile Menu -->
             <div class="nav-item-wrap" onclick="openDeveloperModal()">
                 <div class="nav-icon" style="color:#2563eb; background:#eff6ff;">👨‍💻</div>
                 <div class="nav-label">Developer</div>
@@ -327,7 +332,7 @@
     </div>
 </div>
 
-<!-- Special Developer Details Modal (Updated Company Name) -->
+<!-- Special Developer Details Modal -->
 <div class="modal-overlay" id="developerModal">
     <div class="modal-content" style="max-width: 440px; text-align: center; border-top: 5px solid var(--btn-blue);">
         <div class="modal-header">
@@ -375,7 +380,7 @@
     </div>
 </div>
 
-<!-- Account & Subscription Hub Modal (Super Admin Only, renamed from Billing) -->
+<!-- Account & Subscription Hub Modal (Super Admin Only) -->
 <div class="modal-overlay" id="billingModal">
     <div class="modal-content" style="max-width: 900px;">
         <div class="modal-header">
@@ -471,7 +476,7 @@
     </div>
 </div>
 
-<!-- Settings & Admin Modal with Separated Client Management & Upload Submenus -->
+<!-- Settings & Admin Modal -->
 <div class="modal-overlay" id="settingsModal">
     <div class="modal-content" style="max-width: 850px;">
         <div class="modal-header">
@@ -502,7 +507,6 @@
             </div>
         </div>
 
-        <!-- Separate Client Management Submenu -->
         <div id="tabClientMgmt" class="settings-tab-content">
             <div style="background: #f0fdf4; padding: 20px; border: 1px solid #bbf7d0; border-radius: 6px;">
                 <div style="font-size: 14px; font-weight: 700; color: #166534; margin-bottom: 5px;">🏢 Client House Management</div>
@@ -522,7 +526,6 @@
             </div>
         </div>
 
-        <!-- Separate Data Upload Hub Submenu -->
         <div id="tabUploadData" class="settings-tab-content">
             <div style="background: #eff6ff; padding: 20px; border: 1px solid #bfdbfe; border-radius: 6px;">
                 <div style="font-size: 14px; font-weight: 700; color: #1e40af; margin-bottom: 10px;">📥 Separate Data Upload Hub</div>
@@ -629,7 +632,7 @@
             let reply = "Hello! I am Nemo. I can guide you through managing your memos, uploading CSV files, and using the system features efficiently. Feel free to ask about software operations!";
             let lower = txt.toLowerCase();
             if(lower.includes('hello') || lower.includes('hi')) reply = "Hello! Welcome to Smart Memo DMS. How can I assist you today?";
-            else if(lower.includes('pdf') || lower.includes('memo') || lower.includes('scan') || lower.includes('skipper')) reply = "To use the Memo Skipper Tool, click on the Reports icon on the sidebar and select 'Memo Skipper Tool' from the submenu, or click the red X shortcut bar!";
+            else if(lower.includes('pdf') || lower.includes('memo') || lower.includes('scan') || lower.includes('skipper')) reply = "To use the Memo Skipper Tool, click on the Skipper icon on the sidebar or the Reports menu!";
             else if(lower.includes('print')) reply = "Once your memos are processed and filtered, click 'Execute Print' to run the auto-stitch engine.";
             else if(lower.includes('code') || lower.includes('coding') || lower.includes('password') || lower.includes('secret')) reply = "Aha! System backend configurations and secret passwords are completely restricted. My job is strictly to help you navigate and master the software interface!";
             else if(lower.includes('developer') || lower.includes('shihab') || lower.includes('khairul')) reply = "The brilliant developer behind this system is Khairul Hasan Shihab (01580441506).";
@@ -815,7 +818,7 @@
     function updateClock() { document.getElementById('liveClock').innerText = new Date().toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'medium' }); }
     setInterval(updateClock, 1000); updateClock();
 
-    let savedHouseName = "J & J Enterprise";
+    let savedHouseName = "S-SMART TECHNOLOGIES";
     let minPrintAmount = parseFloat(localStorage.getItem('minPrintAmount')) || 300;
     document.getElementById('displayHouseName').innerText = savedHouseName;
 
@@ -988,7 +991,7 @@
                         let cleanStrForMemo = engBlockStr.replace(/\s+/g, '');
                         let memoMatch = cleanStrForMemo.match(/(26000\d{5})/);
                         let pNum = (cleanStrForMemo.match(/P(\d+)of(\d+)/i) || [0,1])[1];
-                        let currentMemoNo = memoMatch ? memoMatch[1] : (pNum > 1 ? lastMemoNo : (engBlockStr.includes("J & J") ? "No_Num_" + Math.floor(Math.random()*10000) : lastMemoNo));
+                        let currentMemoNo = memoMatch ? memoMatch[1] : (pNum > 1 ? lastMemoNo : (engBlockStr.includes("S-SMART") ? "No_Num_" + Math.floor(Math.random()*10000) : lastMemoNo));
                         lastMemoNo = currentMemoNo;
 
                         let amount = 0.0, isDamage = false, hasPayout = false, hasDecimals = false;
