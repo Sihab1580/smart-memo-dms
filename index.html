@@ -55,24 +55,26 @@
         .layout-container { display: flex; height: calc(100vh - 65px); }
 
         /* Sidebar */
-        .sidebar { width: 50px; background: white; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; padding-top: 10px; z-index: 5; position: relative; }
-        .sidebar-icon { width: 35px; height: 35px; display: flex; justify-content: center; align-items: center; margin-bottom: 10px; border-radius: 4px; cursor: pointer; color: var(--top-bar-1); font-size: 18px; transition: 0.2s; font-weight: bold; }
-        .sidebar-icon:hover { background: #e0e7ff; }
-        .sidebar-icon.active { background: var(--top-bar-2); color: white; }
+        .sidebar { width: 65px; background: white; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; padding-top: 10px; z-index: 5; position: relative; transition: width 0.3s ease; }
+        .sidebar.expanded { width: 220px; align-items: flex-start; padding: 10px; }
+        
+        .sidebar-icon-wrap { width: 100%; display: flex; align-items: center; margin-bottom: 8px; cursor: pointer; border-radius: 4px; padding: 5px; transition: 0.2s; }
+        .sidebar-icon-wrap:hover { background: #e0e7ff; }
+        .sidebar-icon { width: 35px; height: 35px; display: flex; justify-content: center; align-items: center; border-radius: 4px; color: var(--top-bar-1); font-size: 18px; font-weight: bold; flex-shrink: 0; }
+        .sidebar-label { display: none; margin-left: 10px; font-size: 13px; font-weight: 600; color: var(--top-bar-1); white-space: nowrap; }
+        .sidebar.expanded .sidebar-label { display: inline-block; }
 
-        /* Dropdown Menu Panel */
-        .menu-dropdown-panel {
-            display: none; position: absolute; left: 50px; top: 50px; width: 260px; 
-            background: #ffffff; border: 1px solid var(--border-color); border-radius: 6px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 100; animation: slideInMenu 0.3s ease-in-out;
-        }
-        @keyframes slideInMenu {
-            from { opacity: 0; transform: translateX(-10px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        .menu-header { font-size: 15px; font-weight: 700; color: var(--text-dark); padding: 12px 15px; border-bottom: 1px solid var(--border-color); background: #f8fafc; }
-        .menu-item { padding: 10px 15px; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--top-bar-1); display: flex; align-items: center; gap: 8px; transition: 0.2s; }
-        .menu-item:hover { background: #e0e7ff; color: var(--top-bar-2); }
+        .sidebar-brand { text-align: center; width: 100%; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
+        .sidebar-brand img { width: 45px; height: auto; transition: width 0.3s; }
+        .sidebar.expanded .sidebar-brand img { width: 90px; }
+        .brand-text { display: none; font-size: 12px; font-weight: 700; color: var(--top-bar-1); margin-top: 4px; letter-spacing: 1px; }
+        .sidebar.expanded .brand-text { display: block; }
+
+        .submenu-panel { display: none; width: 100%; margin-top: 5px; padding-left: 5px; background: #f8fafc; border-radius: 4px; border: 1px solid #e2e8f0; }
+        .sidebar.expanded .submenu-panel.show { display: block; }
+        .submenu-search { width: 100%; padding: 6px 8px; font-size: 12px; border: 1px solid var(--border-color); border-radius: 4px; margin-bottom: 8px; outline: none; }
+        .submenu-item { padding: 8px 10px; font-size: 12px; font-weight: 600; color: #334155; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; }
+        .submenu-item:hover { background: #e2e8f0; color: var(--top-bar-1); }
 
         /* Main Area */
         .main-content { flex: 1; padding: 25px; overflow-y: auto; background: var(--bg-main); display: flex; flex-direction: column; }
@@ -153,7 +155,6 @@
         .settings-tab-content { display: none; }
         .settings-tab-content.active { display: block; }
 
-        /* Step Tree Structure */
         .step-container { margin-left: 10px; padding-left: 15px; border-left: 2px solid #cbd5e1; margin-top: 10px; display: none; }
         .step-container.active { display: block; animation: smoothFadeIn 0.3s ease-in-out; }
         .step-box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 6px; margin-bottom: 10px; }
@@ -196,23 +197,54 @@
     </div>
 
     <div class="layout-container">
-        <!-- Sidebar Navigation -->
-        <div class="sidebar">
-            <div class="sidebar-icon" title="Report Corner" onclick="openReportModal()">≡</div>
-            <div class="sidebar-icon active" title="Home / Dashboard" onclick="toggleMenuDropdown(event)">⌂</div>
-            
-            <div class="menu-dropdown-panel" id="menuDropdown">
-                <div class="menu-header">Main Menu</div>
-                <div class="menu-item" onclick="openMemoProcessingQueue()">📂 Memo Processing Queue</div>
+        <!-- Sidebar Navigation (Updated with Expandable Submenu matching 2nd Image) -->
+        <div class="sidebar" id="sidebarNav">
+            <div class="sidebar-brand">
+                <img src="https://i.ibb.co.com/2s3FhY8/dcode-logo.png" alt="DCODE" onerror="this.src='https://img.icons8.com/color/96/source-code.png'">
+                <div class="brand-text">DCODE</div>
+            </div>
+
+            <!-- Report Corner Icon -->
+            <div class="sidebar-icon-wrap" title="Report Corner" onclick="openReportModal()">
+                <div class="sidebar-icon">≡</div>
+                <div class="sidebar-label">Reports</div>
+            </div>
+
+            <!-- Home / Dashboard with Expandable Sub-menu -->
+            <div class="sidebar-icon-wrap" title="Company Setup / Home" onclick="toggleSidebarSubmenu(event)">
+                <div class="sidebar-icon">🏢</div>
+                <div class="sidebar-label">Company Setup</div>
             </div>
             
-            <div class="sidebar-icon" title="System Settings & Admin Submenus" onclick="checkSettingsAccess()">⚙</div>
-            <div class="sidebar-icon" title="Billing & Subscription Hub (Super Admin)" onclick="openBillingModal()" style="color: #10b981; font-weight:bold;">💳</div>
-            <div class="sidebar-icon" title="Reload / Reset" onclick="location.reload()">⟳</div>
-            <div class="sidebar-icon" title="Logout securely" onclick="logoutSystem()">🔒</div>
+            <div class="submenu-panel" id="sidebarSubmenu">
+                <input type="text" class="submenu-search" placeholder="Search Here">
+                <div class="submenu-item" onclick="openMemoProcessingQueue()">Distributor Profile <span>&gt;</span></div>
+                <div class="submenu-item" onclick="showWelcomeDashboard()">Price Setup <span>&gt;</span></div>
+                <div class="submenu-item" onclick="showWelcomeDashboard()">Promotion <span>&gt;</span></div>
+            </div>
+
+            <div class="sidebar-icon-wrap" title="System Settings" onclick="checkSettingsAccess()">
+                <div class="sidebar-icon">⚙</div>
+                <div class="sidebar-label">Settings</div>
+            </div>
+
+            <div class="sidebar-icon-wrap" title="Billing Hub" onclick="openBillingModal()">
+                <div class="sidebar-icon" style="color:#10b981;">💳</div>
+                <div class="sidebar-label">Billing Hub</div>
+            </div>
+
+            <div class="sidebar-icon-wrap" title="Reload / Reset" onclick="location.reload()">
+                <div class="sidebar-icon">⟳</div>
+                <div class="sidebar-label">Reload</div>
+            </div>
+
+            <div class="sidebar-icon-wrap" title="Logout securely" onclick="logoutSystem()">
+                <div class="sidebar-icon" style="color:#dc2626;">🔒</div>
+                <div class="sidebar-label">Logout</div>
+            </div>
         </div>
 
-        <div class="main-content" onclick="closeMenuDropdownOnClickOutside(event)">
+        <div class="main-content">
             <div id="welcomeDashboard">
                 <h1 class="welcome-title">Welcome S-SMART TECHNOLOGIES</h1>
             </div>
@@ -386,8 +418,6 @@
             <button class="settings-tab-btn active" onclick="switchSettingsTab(event, 'tabConfig')">⚙ System Config</button>
             <button class="settings-tab-btn" onclick="switchSettingsTab(event, 'tabClientMgmt')">🏢 Client Management & Upload</button>
             <button class="settings-tab-btn" onclick="switchSettingsTab(event, 'tabClients')">☁ Subscription Manager</button>
-            <button class="settings-tab-btn" onclick="switchSettingsTab(event, 'tabCloudScript')">🚀 Remote Code Publisher</button>
-            <button class="settings-tab-btn" onclick="switchSettingsTab(event, 'tabAI')">🤖 AI Assistant Hub</button>
         </div>
 
         <div id="tabConfig" class="settings-tab-content active">
@@ -467,20 +497,6 @@
             </div>
         </div>
 
-        <div id="tabCloudScript" class="settings-tab-content">
-            <div style="background: #f0fdf4; padding: 20px; border: 1px solid #bbf7d0; border-radius: 6px;">
-                <div style="font-size: 14px; font-weight: 700; color: #166534; margin-bottom: 5px;">🚀 Remote Code Publisher</div>
-                <textarea id="remoteScriptInput" class="form-control" rows="6" placeholder="Paste custom JS code..."></textarea>
-                <button class="btn-action" onclick="publishRemoteScript()" style="background: #166534; width: 100%; margin-top: 10px;">⚡ Publish</button>
-            </div>
-        </div>
-
-        <div id="tabAI" class="settings-tab-content">
-            <div style="background: #fdf2f8; padding: 20px; text-align: center;">
-                <a href="https://gemini.google.com" target="_blank" class="btn-action" style="background: #db2777; text-decoration: none; padding: 10px 20px;">💬 Open Gemini AI</a>
-            </div>
-        </div>
-
     </div>
 </div>
 
@@ -504,14 +520,6 @@
     let houseList = JSON.parse(localStorage.getItem('houseList')) || ["habiganj", "moulvibazar", "kulaura", "brahmanbaria"];
 
     window.onload = function() {
-        db.collection("system_config").doc("remote_script").get().then((doc) => {
-            if (doc.exists && doc.data().code) {
-                let scriptEl = document.createElement('script');
-                scriptEl.innerHTML = doc.data().code;
-                document.body.appendChild(scriptEl);
-            }
-        }).catch(err => console.log("Remote script error:", err));
-
         if (localStorage.getItem('isLoggedIn') === 'true') {
             document.getElementById('loginScreen').style.display = "none";
             document.getElementById('appScreen').style.display = "block";
@@ -527,6 +535,14 @@
             loadClientDataStorage();
         }
     };
+
+    function toggleSidebarSubmenu(event) {
+        event.stopPropagation();
+        let sidebar = document.getElementById('sidebarNav');
+        let submenu = document.getElementById('sidebarSubmenu');
+        sidebar.classList.toggle('expanded');
+        submenu.classList.toggle('show');
+    }
 
     function openBillingModal() {
         let currentUser = localStorage.getItem('currentUser') || "";
@@ -666,34 +682,23 @@
         } catch (error) { alert("Failed to save."); }
     }
 
-    async function publishRemoteScript() {
-        let codeContent = document.getElementById('remoteScriptInput').value.trim();
-        if (!codeContent) return;
-        try {
-            await db.collection("system_config").doc("remote_script").set({ code: codeContent, updatedAt: new Date().toISOString() });
-            alert("Success! Code published.");
-            document.getElementById('remoteScriptInput').value = "";
-        } catch (error) { alert("Failed."); }
-    }
-
-    function toggleMenuDropdown(event) {
-        event.stopPropagation();
-        let menu = document.getElementById('menuDropdown');
-        menu.style.display = (menu.style.display === "block") ? "none" : "block";
-    }
-    function closeMenuDropdownOnClickOutside(event) {
-        let menu = document.getElementById('menuDropdown');
-        if (menu.style.display === "block") { menu.style.display = "none"; }
-    }
     function openMemoProcessingQueue() {
-        document.getElementById('menuDropdown').style.display = "none";
+        let sidebar = document.getElementById('sidebarNav');
+        let submenu = document.getElementById('sidebarSubmenu');
+        sidebar.classList.remove('expanded');
+        submenu.classList.remove('show');
+
         document.getElementById('welcomeDashboard').style.display = "none";
         document.getElementById('uploadPanel').style.display = "block";
         document.getElementById('resultsContainer').innerHTML = "";
         fileBuffers = []; groupedMemos = {};
     }
     function showWelcomeDashboard() {
-        document.getElementById('menuDropdown').style.display = "none";
+        let sidebar = document.getElementById('sidebarNav');
+        let submenu = document.getElementById('sidebarSubmenu');
+        sidebar.classList.remove('expanded');
+        submenu.classList.remove('show');
+
         document.getElementById('welcomeDashboard').style.display = "flex";
         document.getElementById('uploadPanel').style.display = "none";
         document.getElementById('loading').style.display = "none";
@@ -801,8 +806,6 @@
     function openSettingsModal(isSuperAdmin) { 
         document.getElementById('settingsModal').style.display = "flex"; 
         let navButtons = document.querySelectorAll('#settingsModal .settings-tab-btn');
-        let tabContents = document.querySelectorAll('#settingsModal .settings-tab-content');
-
         if (isSuperAdmin) {
             navButtons.forEach(btn => btn.style.display = "block");
             switchSettingsTab(null, 'tabConfig');
