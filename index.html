@@ -197,18 +197,7 @@
         <div>Smart Memo MDM | <span id="displayHouseName" style="color:#a5b4fc;"></span></div>
     </div>
     <div class="topbar-2">
-        <div style="display: flex; align-items: center; gap: 15px;">
-            <span>BACKOFFICE</span>
-            <!-- Super User Remote House Switcher Dropdown -->
-            <div id="superUserHouseSwitcher" style="display: none;">
-                <select id="globalHouseSwitch" class="form-control" style="padding: 3px 8px; font-size: 11px; background: #1e40af; color: white; border: 1px solid #93c5fd; border-radius: 4px; font-weight: bold;" onchange="switchSuperUserHouse(this.value)">
-                    <option value="habiganj">Habiganj House</option>
-                    <option value="moulvibazar">Moulvibazar House</option>
-                    <option value="kulaura">Kulaura House</option>
-                    <option value="brahmanbaria">Brahmanbaria House</option>
-                </select>
-            </div>
-        </div>
+        <div>BACKOFFICE</div>
         <div style="font-weight: 400; font-size: 12px; display: flex; align-items: center; gap:15px;">
             <span id="subRemaining" style="color: #fef08a; font-weight: 600;"></span>
             <span id="liveClock">Loading Time...</span>
@@ -218,7 +207,7 @@
     </div>
 
     <div class="layout-container">
-        <!-- Professional Sidebar with Role-Based Access Control (RBAC) -->
+        <!-- Professional Sidebar -->
         <div class="sidebar" id="sidebarNav" onclick="closeAllSubmenus(event)">
             
             <!-- 1. Reports Menu -->
@@ -233,8 +222,8 @@
                 </div>
             </div>
 
-            <!-- 2. Setup Menu (Restricted for regular users) -->
-            <div class="nav-item-wrap" id="navSetup" onclick="toggleSubmenu('setupSubmenu', event)">
+            <!-- 2. Setup Menu -->
+            <div class="nav-item-wrap" onclick="toggleSubmenu('setupSubmenu', event)">
                 <div class="nav-icon">🏢</div>
                 <div class="nav-label">Setup</div>
                 
@@ -244,14 +233,14 @@
                 </div>
             </div>
 
-            <!-- 3. Settings Menu (Restricted for regular users) -->
-            <div class="nav-item-wrap" id="navSettings" onclick="checkSettingsAccess()">
+            <!-- 3. Settings Menu (Locked for regular users) -->
+            <div class="nav-item-wrap" onclick="checkSettingsAccess()">
                 <div class="nav-icon">⚙</div>
                 <div class="nav-label">Settings</div>
             </div>
 
-            <!-- 4. Account Menu (Restricted for regular users) -->
-            <div class="nav-item-wrap" id="navAccount" onclick="openBillingModal()">
+            <!-- 4. Account Menu (Locked for regular users) -->
+            <div class="nav-item-wrap" onclick="openBillingModal()">
                 <div class="nav-icon" style="color:#10b981;">💳</div>
                 <div class="nav-label">Account</div>
             </div>
@@ -262,13 +251,13 @@
                 <div class="nav-label">Reload</div>
             </div>
 
-            <!-- 6. Memo Skipper Tool Button -->
+            <!-- 6. Memo Skipper Tool Button (Open for all) -->
             <div class="nav-item-wrap" onclick="openMemoProcessingQueue()">
                 <div class="nav-icon" style="color:#ef4444; background:#fef2f2;">⚡</div>
                 <div class="nav-label">Skipper</div>
             </div>
 
-            <!-- 7. Developer Profile Menu -->
+            <!-- 7. Developer Profile Menu (Open for all) -->
             <div class="nav-item-wrap" onclick="openDeveloperModal()">
                 <div class="nav-icon" style="color:#2563eb; background:#eff6ff;">👨‍💻</div>
                 <div class="nav-label">Developer</div>
@@ -411,7 +400,8 @@
 <!-- Password Modal -->
 <div class="modal-overlay" id="passwordModal">
     <div class="modal-content" style="max-width: 350px; text-align: center;">
-        <div class="modal-header"><span>Security Check</span><button class="close-btn" onclick="closePasswordModal()">&times;</button></div>
+        <div class="modal-header"><span>🔒 Security Check (Super Admin Password Required)</span><button class="close-btn" onclick="closePasswordModal()">&times;</button></div>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">This area is locked for regular users. Enter Super Admin password to access.</p>
         <input type="password" id="adminPassword" class="form-control" placeholder="Enter Password" style="margin-bottom: 15px; text-align: center; letter-spacing: 2px;" onkeypress="if(event.key === 'Enter') verifySettingsPassword()">
         <button class="btn-action" style="width: 100%;" onclick="verifySettingsPassword()">Submit</button>
     </div>
@@ -513,11 +503,11 @@
     </div>
 </div>
 
-<!-- Settings & Admin Modal with House Select Dropdown for Data Upload -->
+<!-- Settings & Admin Modal -->
 <div class="modal-overlay" id="settingsModal">
     <div class="modal-content" style="max-width: 850px;">
         <div class="modal-header">
-            <span>⚙ Admin Submenu Control Center</span>
+            <span>⚙ Admin Submenu Control Center (Super Admin Only)</span>
             <button class="close-btn" onclick="closeSettings()">&times;</button>
         </div>
 
@@ -563,19 +553,11 @@
             </div>
         </div>
 
-        <!-- Data Upload Hub with Specific House Selection Dropdown -->
         <div id="tabUploadData" class="settings-tab-content">
             <div style="background: #eff6ff; padding: 20px; border: 1px solid #bfdbfe; border-radius: 6px;">
                 <div style="font-size: 14px; font-weight: 700; color: #1e40af; margin-bottom: 10px;">📥 Separate Data Upload Hub</div>
-                <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 15px;">Select target house and upload Outlet CSV & Delivery Man CSV files independently.</p>
+                <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 15px;">Upload Outlet CSV and Delivery Man CSV files independently.</p>
                 
-                <div class="form-group" style="margin-bottom: 15px; max-width: 300px;">
-                    <label style="font-weight: bold; color: var(--top-bar-1);">Select Target House for Upload</label>
-                    <select id="uploadHouseDropdown" class="form-control" onchange="onHouseDropdownChange(this.value)">
-                        <!-- Dynamically populated -->
-                    </select>
-                </div>
-
                 <div style="display: flex; gap: 20px; flex-wrap: wrap;">
                     <div class="form-group" style="background: white; padding: 15px; border-radius: 6px; border: 1px solid #cbd5e1;">
                         <label style="font-weight:bold; color:#047857;">🏬 Outlet Master Data (CSV)</label>
@@ -641,40 +623,16 @@
             document.getElementById('appScreen').style.display = "block";
             let currentUser = localStorage.getItem('currentUser') || "";
             let days = localStorage.getItem('subDays') || 0;
-            
             if (currentUser === "linux@ubuntu" || days == '9999') {
                 document.getElementById('subRemaining').innerText = `👑 Super Admin Access`;
-                document.getElementById('superUserHouseSwitcher').style.display = "block";
-                // Show all menu options for Super Admin
-                document.getElementById('navSetup').style.display = "flex";
-                document.getElementById('navSettings').style.display = "flex";
-                document.getElementById('navAccount').style.display = "flex";
             } else {
                 document.getElementById('subRemaining').innerText = `⏳ Sub: ${days} Days Left`;
-                document.getElementById('superUserHouseSwitcher').style.display = "none";
                 activeClientKey = currentUser;
-                
-                // RBAC: Restrict regular user to ONLY 4 items: Reports, Setup (Developer only), Skipper, Developer
-                // Hide Settings and Account hub for regular users
-                document.getElementById('navSettings').style.display = "none";
-                document.getElementById('navAccount').style.display = "none";
             }
             populateHouseDropdown();
             loadClientDataStorage();
         }
     };
-
-    // Super Admin Remote House Switcher Function
-    function switchSuperUserHouse(houseKey) {
-        activeClientKey = houseKey;
-        localStorage.setItem('activeClientKey', activeClientKey);
-        loadClientDataStorage();
-        document.getElementById('displayHouseName').innerText = houseKey.toUpperCase() + " HOUSE";
-        alert(`Switched to ${houseKey.toUpperCase()} House successfully! All file data and reports are now loaded for this house.`);
-        if(document.getElementById('orderUpdateReportSection').style.display === "block") {
-            renderOrderReportTable();
-        }
-    }
 
     // Order Update Report Data & Logic
     const orderReportData = [
@@ -879,28 +837,15 @@
 
     function populateHouseDropdown() {
         let select = document.getElementById('targetClientSelect');
-        let uploadSelect = document.getElementById('uploadHouseDropdown');
-        let globalSelect = document.getElementById('globalHouseSwitch');
-        
-        let optionsHtml = '<option value="">-- Choose House --</option>';
+        if(!select) return;
+        select.innerHTML = '<option value="">-- Choose House --</option>';
         houseList.forEach(house => {
-            let label = house.charAt(0).toUpperCase() + house.slice(1) + " House";
-            optionsHtml += `<option value="${house}">${label}</option>`;
+            let opt = document.createElement('option');
+            opt.value = house;
+            opt.innerText = house.charAt(0).toUpperCase() + house.slice(1) + " House";
+            select.appendChild(opt);
         });
-
-        if(select) select.innerHTML = optionsHtml;
-        if(uploadSelect) uploadSelect.innerHTML = optionsHtml;
-        if(globalSelect) {
-            globalSelect.innerHTML = "";
-            houseList.forEach(house => {
-                let label = house.charAt(0).toUpperCase() + house.slice(1) + " House";
-                globalSelect.innerHTML += `<option value="${house}">${label}</option>`;
-            });
-            globalSelect.value = activeClientKey;
-        }
-
-        if(select) select.value = activeClientKey;
-        if(uploadSelect) uploadSelect.value = activeClientKey;
+        select.value = activeClientKey;
     }
 
     function addNewHouse() {
@@ -1032,10 +977,6 @@
         activeClientKey = clientKey;
         localStorage.setItem('activeClientKey', activeClientKey);
         loadClientDataStorage();
-        let uploadDropdown = document.getElementById('uploadHouseDropdown');
-        if(uploadDropdown) uploadDropdown.value = activeClientKey;
-        let targetDropdown = document.getElementById('targetClientSelect');
-        if(targetDropdown) targetDropdown.value = activeClientKey;
     }
 
     function bengaliToEnglish(str) {
@@ -1063,7 +1004,7 @@
             let data = processCSVData(e.target.result);
             currentDeliveryMap = { ...currentDeliveryMap, ...data };
             localStorage.setItem(`dmMap_${activeClientKey}`, JSON.stringify(currentDeliveryMap));
-            renderSettingsList(); alert(`DM List loaded for ${activeClientKey.toUpperCase()} House!`);
+            renderSettingsList(); alert(`DM List loaded for ${activeClientKey.toUpperCase()}!`);
         };
         reader.readAsText(file, 'UTF-8');
         event.target.value = "";
@@ -1077,7 +1018,7 @@
             currentOutletMap = { ...currentOutletMap, ...data };
             localStorage.setItem(`outletMap_${activeClientKey}`, JSON.stringify(currentOutletMap));
             document.getElementById('outletCountDisplay').innerText = Object.keys(currentOutletMap).length + " Outlets";
-            alert(`Outlets mapped for ${activeClientKey.toUpperCase()} House!`);
+            alert(`Outlets mapped for ${activeClientKey.toUpperCase()}!`);
         };
         reader.readAsText(file, 'UTF-8');
         event.target.value = "";
@@ -1098,7 +1039,7 @@
     function closePasswordModal() { document.getElementById('passwordModal').style.display = "none"; }
     function verifySettingsPassword() {
         if (document.getElementById('adminPassword').value === "15548938") { closePasswordModal(); openSettingsModal(false); } 
-        else { alert("Incorrect Password!"); }
+        else { alert("Incorrect Password! Access Denied."); }
     }
 
     function openSettingsModal(isSuperAdmin) { 
@@ -1108,6 +1049,7 @@
             navButtons.forEach(btn => btn.style.display = "block");
             switchSettingsTab(null, 'tabConfig');
             populateHouseDropdown();
+            document.getElementById('targetClientSelect').value = activeClientKey;
         } else {
             navButtons.forEach((btn, index) => {
                 if (index === 0) { btn.style.display = "block"; btn.click(); } 
