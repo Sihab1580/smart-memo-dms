@@ -810,7 +810,6 @@
             document.getElementById('targetClientSelect').value = activeClientKey;
             onHouseDropdownChange(activeClientKey);
         } else {
-            // Client restrictions: Only basic config / skipped memos view access as requested previously
             navButtons.forEach((btn, index) => {
                 if (index === 0) { btn.style.display = "block"; btn.click(); } 
                 else { btn.style.display = "none"; }
@@ -848,6 +847,7 @@
     }
     function updateFileCount(files) { document.getElementById('fileCount').innerText = files.length > 0 ? `Selected: ${files.length} PDF file(s).` : ''; }
 
+    /* ------------- 3. Core Engine: PDF + Outlet & Payout Detection ------------- */
     async function processAllPDFs() {
         const files = fileInput.files;
         if (files.length === 0) { alert("Upload PDF first!"); return; }
@@ -890,10 +890,16 @@
                         lastMemoNo = currentMemoNo;
 
                         let amount = 0.0, isDamage = false, hasPayout = false, hasDecimals = false;
-                        if (rawAlphaForSearch.includes("পেআউট") || /payout/i.test(rawAlphaForSearch)) hasPayout = true;
+                        if (rawAlphaForSearch.includes("পেআউট") || rawAlphaForSearch.includes("েপআউট") || rawAlphaForSearch.includes("পআউট") || rawAlphaForSearch.includes("আউট") || /payout/i.test(rawAlphaForSearch) || /p-out/i.test(engBlockStr)) {
+                            hasPayout = true;
+                        }
                         let allDecimals = [...engBlockStr.matchAll(/(\d+\.\d{1,2})/g)].map(m => parseFloat(m[1]));
                         if (allDecimals.length > 0) { hasDecimals = true; amount = Math.max(...allDecimals); }
-                        if (rawAlphaForSearch.includes("ড্যামেজ") || /damage/i.test(rawAlphaForSearch)) { if (!hasPayout) { isDamage = true; amount = 0.0; } }
+                        if (rawAlphaForSearch.includes("ক্ষতিগ্রস্থ") || rawAlphaForSearch.includes("ডেমেজ") || rawAlphaForSearch.includes("ড্যামেজ") || /damage/i.test(rawAlphaForSearch)) { 
+                            if (!hasPayout) { isDamage = true; amount = 0.0; }
+                        } else if (hasDecimals && amount === 0) {
+                            if (!hasPayout) isDamage = true; 
+                        }
 
                         let foundOutletName = "";
                         if (outletKeys.length > 0) {
@@ -951,6 +957,7 @@
             let printable = memos.filter(m => m.selected); let skipped = memos.filter(m => !m.selected);
             let btnState = printable.length > 0 ? "" : "disabled";
             let tableId = `table_${dmCounter}`; let skipId = `skip_${dmCounter}`; let bodyId = `body_${dmCounter}`; let iconId = `icon_${dmCounter}`;
+            let payoutPillHtml = payoutCount > 0 ? `<span class="stat-pill payout"><b>Payouts:</b> ${payoutCount}</span>` : '';
 
             let html = `
                 <div class="dm-section">
@@ -961,6 +968,7 @@
                                 <span class="stat-pill"><b>Total:</b> ${totalMemos}</span>
                                 <span class="stat-pill valid"><b>Valid:</b> ${validCount}</span>
                                 <span class="stat-pill damage"><b>Damage:</b> ${damageCount}</span>
+                                ${payoutPillHtml}
                                 <span class="stat-pill skip"><b>Skipped:</b> ${skippedCount}</span>
                             </div>
                         </div>
@@ -977,11 +985,16 @@
                                 <tbody>
             `;
             printable.forEach(item => {
+                let badgeClass = "status-selected"; let statusText = "Selected";
+                if (item.hasPayout) { badgeClass = "status-payout"; statusText = "Payout (Priority)"; } 
+                else if (item.isDamage) { badgeClass = "status-damage"; statusText = "Damage (0 BDT)"; }
+                let amountDisplay = item.isDamage && !item.hasPayout ? "0.00" : item.amount.toLocaleString('en-US', { minimumFractionDigits: 2 });
+
                 html += `<tr>
                     <td><input type="checkbox" class="cb-${dmCounter} checkbox-custom" data-file="${item.fileId}" data-parts="${item.partsData}" checked></td>
                     <td><b>${item.memo_no}</b></td><td>${item.outletName || '-'}</td>
-                    <td><span class="status-badge status-selected">Selected</span></td>
-                    <td><b>${item.amount}</b></td><td>${item.partsData}</td>
+                    <td><span class="status-badge ${badgeClass}">${statusText}</span></td>
+                    <td><b>${amountDisplay}</b></td><td>${item.partsData}</td>
                 </tr>`;
             });
             html += `</tbody></table></div>
@@ -989,11 +1002,12 @@
                     <div style="font-weight:bold; color:red; margin-bottom:5px;">⚠️ Skipped Memos (Below ${minPrintAmount})</div>
                     <table><tbody>`;
             skipped.forEach(item => {
+                let amountDisplay = item.amount.toLocaleString('en-US', { minimumFractionDigits: 2 });
                 html += `<tr>
                     <td><input type="checkbox" class="cb-${dmCounter} checkbox-custom" data-file="${item.fileId}" data-parts="${item.partsData}"></td>
                     <td>${item.memo_no}</td><td>${item.outletName || '-'}</td>
                     <td><span class="status-badge status-dropped">Skipped</span></td>
-                    <td>${item.amount}</td><td>${item.partsData}</td>
+                    <td>${amountDisplay}</td><td>${item.partsData}</td>
                 </tr>`;
             });
             html += `</tbody></table></div></div></div>`;
