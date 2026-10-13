@@ -54,7 +54,7 @@
         .topbar-2 { background: var(--top-bar-2); color: white; height: 40px; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; font-size: 13px; font-weight: 600; box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: relative; z-index: 10; }
         .layout-container { display: flex; height: calc(100vh - 65px); }
 
-        /* Sidebar */
+        /* Sidebar with Expandable Submenu (2nd Image Style) */
         .sidebar { width: 65px; background: white; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; padding-top: 10px; z-index: 5; position: relative; transition: width 0.3s ease; }
         .sidebar.expanded { width: 220px; align-items: flex-start; padding: 10px; }
         
@@ -197,7 +197,7 @@
     </div>
 
     <div class="layout-container">
-        <!-- Sidebar Navigation (Updated with Expandable Submenu matching 2nd Image) -->
+        <!-- Sidebar Navigation -->
         <div class="sidebar" id="sidebarNav">
             <div class="sidebar-brand">
                 <img src="https://i.ibb.co.com/2s3FhY8/dcode-logo.png" alt="DCODE" onerror="this.src='https://img.icons8.com/color/96/source-code.png'">
@@ -210,7 +210,7 @@
                 <div class="sidebar-label">Reports</div>
             </div>
 
-            <!-- Home / Dashboard with Expandable Sub-menu -->
+            <!-- Company Setup with Expandable Submenu (2nd Image Style) -->
             <div class="sidebar-icon-wrap" title="Company Setup / Home" onclick="toggleSidebarSubmenu(event)">
                 <div class="sidebar-icon">🏢</div>
                 <div class="sidebar-label">Company Setup</div>
