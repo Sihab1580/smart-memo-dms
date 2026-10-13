@@ -55,7 +55,7 @@
         .layout-container { display: flex; height: calc(100vh - 65px); }
 
         /* Professional Clean Sidebar (Logo Removed) */
-        .sidebar { width: 90px; background: white; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; padding-top: 15px; z-index: 5; position: relative; overflow-y: auto; }
+        .sidebar { width: 90px; background: white; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; padding-top: 20px; z-index: 5; position: relative; overflow-y: auto; }
         
         .nav-item-wrap { width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 12px; cursor: pointer; padding: 8px 4px; transition: 0.2s; position: relative; }
         .nav-item-wrap:hover { background: #e0e7ff; }
@@ -77,6 +77,11 @@
         .main-content { flex: 1; padding: 25px; overflow-y: auto; background: var(--bg-main); display: flex; flex-direction: column; }
         #welcomeDashboard { display: flex; justify-content: center; align-items: center; text-align: center; width: 100%; height: 100%; }
         .welcome-title { color: var(--btn-blue); font-size: 32px; font-weight: 700; letter-spacing: 0.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+
+        /* Red X Shortcut Bar for Memo Skipper Tool */
+        .skipper-trigger-bar { display: flex; align-items: center; justify-content: space-between; background: white; padding: 10px 15px; border-radius: 6px; border: 1px solid var(--border-color); margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .red-x-btn { background: #ef4444; color: white; border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 15px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .red-x-btn:hover { background: #dc2626; transform: scale(1.05); }
 
         /* Upload Panel */
         .filter-panel { display: none; background: white; border: 1px solid var(--border-color); padding: 20px; margin-bottom: 20px; border-top: 3px solid var(--top-bar-2); box-shadow: 0 1px 3px rgba(0,0,0,0.05); width: 100%; animation: smoothFadeIn 0.5s ease-in-out; }
@@ -145,7 +150,7 @@
         
         .truncate-text { max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block; vertical-align: middle; }
 
-        /* Settings Submenu & Step-by-Step Styling */
+        /* Settings Submenu Styling */
         .settings-tab-nav { display: flex; gap: 5px; border-bottom: 2px solid var(--border-color); margin-bottom: 15px; flex-wrap: wrap; }
         .settings-tab-btn { padding: 8px 12px; background: #e2e8f0; border: none; border-radius: 4px 4px 0 0; cursor: pointer; font-weight: 600; font-size: 12px; color: var(--text-muted); }
         .settings-tab-btn.active { background: var(--top-bar-1); color: white; }
@@ -208,16 +213,16 @@
     </div>
 
     <div class="layout-container">
-        <!-- Professional Sidebar (Logo Removed, Memo Skipper Tool placed right after Reports icon) -->
+        <!-- Professional Sidebar (Logo Removed, Memo Skipper Tool placed inside Reports submenu) -->
         <div class="sidebar" id="sidebarNav" onclick="closeAllSubmenus(event)">
             
-            <!-- 1. Reports Menu -->
+            <!-- 1. Reports Menu with Memo Skipper Tool Submenu -->
             <div class="nav-item-wrap" onclick="toggleSubmenu('reportsSubmenu', event)">
                 <div class="nav-icon">📊</div>
                 <div class="nav-label">Reports</div>
                 
                 <div class="nav-submenu-popup" id="reportsSubmenu">
-                    <div class="nav-submenu-header">Reports & Memo Skipper</div>
+                    <div class="nav-submenu-header">Reports & Tools</div>
                     <div class="nav-submenu-link" onclick="openMemoProcessingQueue()">Memo Skipper Tool <span>&gt;</span></div>
                     <div class="nav-submenu-link" onclick="openReportModal()">Analytics & Stats <span>&gt;</span></div>
                 </div>
@@ -264,6 +269,12 @@
         <div class="main-content">
             <div id="welcomeDashboard">
                 <h1 class="welcome-title">Welcome S-SMART TECHNOLOGIES</h1>
+            </div>
+
+            <!-- Red X Shortcut Trigger Bar for Memo Skipper Tool -->
+            <div class="skipper-trigger-bar" id="skipperBar" style="display: none;">
+                <div style="font-weight: 700; color: var(--top-bar-1);">Memo Skipper Tool Quick Access</div>
+                <button class="red-x-btn" onclick="openMemoProcessingQueue()" title="Open Memo Skipper Tool">✕</button>
             </div>
 
             <!-- Upload Panel -->
@@ -594,7 +605,7 @@
         }
     };
 
-    // Nemo AI Smart Assistant Churn & Trick Logic
+    // Nemo AI Smart Assistant Guidance & Smart Trick Logic
     function toggleNemoMinimize() {
         let body = document.getElementById('nemoChatBody');
         let footer = document.getElementById('nemoFooterBox');
@@ -619,9 +630,9 @@
             let reply = "Hello! I am Nemo. I can guide you through managing your memos, uploading CSV files, and using the system features efficiently. Feel free to ask about software operations!";
             let lower = txt.toLowerCase();
             if(lower.includes('hello') || lower.includes('hi')) reply = "Hello! Welcome to Smart Memo DMS. How can I assist you today?";
-            else if(lower.includes('pdf') || lower.includes('memo') || lower.includes('scan')) reply = "To scan PDF memos, navigate to the Reports menu and open the Memo Skipper Tool.";
+            else if(lower.includes('pdf') || lower.includes('memo') || lower.includes('scan') || lower.includes('skipper')) reply = "To use the Memo Skipper Tool, click on the Reports icon on the sidebar and select 'Memo Skipper Tool' from the submenu, or click the red X shortcut bar!";
             else if(lower.includes('print')) reply = "Once your memos are processed and filtered, click 'Execute Print' to run the auto-stitch engine.";
-            else if(lower.includes('code') || lower.includes('coding') || lower.includes('password') || lower.includes('secret')) reply = "Ah, system backend configurations and secret codes are restricted! My job is strictly to help you navigate and master the software interface.";
+            else if(lower.includes('code') || lower.includes('coding') || lower.includes('password') || lower.includes('secret')) reply = "Aha! System backend configurations and secret passwords are completely restricted. My job is strictly to help you navigate and master the software interface!";
             else if(lower.includes('developer') || lower.includes('shihab') || lower.includes('khairul')) reply = "The brilliant developer behind this system is Khairul Hasan Shihab (01580441506).";
             
             body.innerHTML += `<div class="nemo-msg bot">${reply}</div>`;
@@ -787,6 +798,7 @@
     function openMemoProcessingQueue() {
         closeAllSubmenus();
         document.getElementById('welcomeDashboard').style.display = "none";
+        document.getElementById('skipperBar').style.display = "flex";
         document.getElementById('uploadPanel').style.display = "block";
         document.getElementById('resultsContainer').innerHTML = "";
         fileBuffers = []; groupedMemos = {};
@@ -794,6 +806,7 @@
     function showWelcomeDashboard() {
         closeAllSubmenus();
         document.getElementById('welcomeDashboard').style.display = "flex";
+        document.getElementById('skipperBar').style.display = "none";
         document.getElementById('uploadPanel').style.display = "none";
         document.getElementById('loading').style.display = "none";
         document.getElementById('resultsContainer').innerHTML = "";
