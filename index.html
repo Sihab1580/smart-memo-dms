@@ -54,7 +54,7 @@
         .topbar-2 { background: var(--top-bar-2); color: white; height: 40px; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; font-size: 13px; font-weight: 600; box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: relative; z-index: 10; }
         .layout-container { display: flex; height: calc(100vh - 65px); width: 100%; overflow: hidden; }
 
-        /* Professional Clean Sidebar (Scrollbar Completely Removed & Scaled) */
+        /* Professional Clean Sidebar */
         .sidebar { width: 95px; background: white; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; padding-top: 15px; z-index: 5; position: relative; overflow: hidden; flex-shrink: 0; }
         
         .nav-item-wrap { width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 12px; cursor: pointer; padding: 6px 4px; transition: 0.2s; position: relative; }
@@ -78,10 +78,14 @@
         #welcomeDashboard { display: flex; justify-content: center; align-items: center; text-align: center; width: 100%; height: 100%; }
         .welcome-title { color: var(--btn-blue); font-size: 32px; font-weight: 700; letter-spacing: 0.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.05); }
 
-        /* Red X Shortcut Bar for Memo Skipper Tool */
-        .skipper-trigger-bar { display: flex; align-items: center; justify-content: space-between; background: white; padding: 10px 15px; border-radius: 6px; border: 1px solid var(--border-color); margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        .red-x-btn { background: #ef4444; color: white; border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 15px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
-        .red-x-btn:hover { background: #dc2626; transform: scale(1.05); }
+        /* Order Update Report Table Styling */
+        .report-container { display: none; background: white; padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 1px 3px rgba(0,0,0,0.05); width: 100%; animation: smoothFadeIn 0.3s ease-in-out; }
+        .report-header-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px solid var(--top-bar-1); padding-bottom: 10px; }
+        .report-table { width: 100%; border-collapse: collapse; text-align: center; font-size: 12px; }
+        .report-table th { background: var(--top-bar-1); color: white; padding: 8px; border: 1px solid #cbd5e1; font-weight: 600; }
+        .report-table td { padding: 6px 8px; border: 1px solid #cbd5e1; }
+        .report-table tr:hover { background: #f8fafc; }
+        .target-input { width: 70px; padding: 4px; text-align: center; border: 1px solid var(--border-color); border-radius: 4px; font-weight: bold; }
 
         /* Upload Panel */
         .filter-panel { display: none; background: white; border: 1px solid var(--border-color); padding: 20px; margin-bottom: 20px; border-top: 3px solid var(--top-bar-2); box-shadow: 0 1px 3px rgba(0,0,0,0.05); width: 100%; animation: smoothFadeIn 0.5s ease-in-out; }
@@ -120,10 +124,6 @@
 
         .table-container { max-width: 95% ; margin: 15px auto; background: white; border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; }
         .table-toolbar { padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; background: #fdfdfd; border-bottom: 1px solid var(--border-color); }
-        table { width: 100%; border-collapse: collapse; text-align: left; }
-        th, td { padding: 8px 12px; border-bottom: 1px solid var(--border-color); font-size: 12px; }
-        th { color: var(--text-muted); font-weight: 600; background: #f9fafb; border-bottom: 2px solid var(--border-color); white-space: nowrap; }
-        tr:hover { background: #f3f4f6; }
         
         .status-badge { padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: 700; white-space: nowrap; }
         .status-selected { background: #d1fae5; color: #047857; }
@@ -147,8 +147,6 @@
         .modal-content { background: white; padding: 25px; border-radius: 8px; width: 95%; max-width: 850px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
         .modal-header { font-size: 16px; font-weight: 700; color: var(--top-bar-1); margin-bottom: 15px; display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
         .close-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-muted); }
-        
-        .truncate-text { max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: inline-block; vertical-align: middle; }
 
         /* Settings Submenu Styling */
         .settings-tab-nav { display: flex; gap: 5px; border-bottom: 2px solid var(--border-color); margin-bottom: 15px; flex-wrap: wrap; }
@@ -157,11 +155,7 @@
         .settings-tab-content { display: none; }
         .settings-tab-content.active { display: block; }
 
-        .step-container { margin-left: 10px; padding-left: 15px; border-left: 2px solid #cbd5e1; margin-top: 10px; display: none; }
-        .step-container.active { display: block; animation: smoothFadeIn 0.3s ease-in-out; }
-        .step-box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 6px; margin-bottom: 10px; }
-
-        /* Nemo AI Smart Assistant Chatbot Widget (Width: 2.5 inch ~ 280px, Height: 6 inch ~ 420px, Bottom: 1.5 inch ~ 55px) */
+        /* Nemo AI Smart Assistant Chatbot Widget */
         #nemoChatWidget {
             position: fixed; bottom: 55px; right: 25px; width: 280px; height: 420px;
             background: white; border: 1px solid #cbd5e1; border-radius: 10px;
@@ -213,16 +207,17 @@
     </div>
 
     <div class="layout-container">
-        <!-- Professional Sidebar with Memo Skipper Button Added in the Marked Slot -->
+        <!-- Professional Sidebar -->
         <div class="sidebar" id="sidebarNav" onclick="closeAllSubmenus(event)">
             
-            <!-- 1. Reports Menu with Analytics & Stats -->
+            <!-- 1. Reports Menu with Order Update Report Submenu -->
             <div class="nav-item-wrap" onclick="toggleSubmenu('reportsSubmenu', event)">
                 <div class="nav-icon">📊</div>
                 <div class="nav-label">Reports</div>
                 
                 <div class="nav-submenu-popup" id="reportsSubmenu">
                     <div class="nav-submenu-header">Reports & Analytics</div>
+                    <div class="nav-submenu-link" onclick="openOrderUpdateReport()">Order Update Report <span>&gt;</span></div>
                     <div class="nav-submenu-link" onclick="openReportModal()">Analytics & Stats <span>&gt;</span></div>
                 </div>
             </div>
@@ -256,7 +251,7 @@
                 <div class="nav-label">Reload</div>
             </div>
 
-            <!-- 6. Memo Skipper Tool Button (Placed in your exact marked slot) -->
+            <!-- 6. Memo Skipper Tool Button -->
             <div class="nav-item-wrap" onclick="openMemoProcessingQueue()">
                 <div class="nav-icon" style="color:#ef4444; background:#fef2f2;">⚡</div>
                 <div class="nav-label">Skipper</div>
@@ -295,6 +290,37 @@
                     <div class="form-group" style="flex: 1;">
                         <button class="btn-action" onclick="processAllPDFs()" style="height: 38px; width: 100%;">⟳ Scan & Process Memos</button>
                     </div>
+                </div>
+            </div>
+
+            <!-- Order Update Report Section Container -->
+            <div class="report-container" id="orderUpdateReportSection">
+                <div class="report-header-title">
+                    <h3 style="color: var(--top-bar-1); font-size: 16px;">📈 Order Update Report</h3>
+                    <div style="font-size: 12px; font-weight: 600; color: var(--text-muted);" id="reportLiveDateTime"></div>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="report-table">
+                        <thead>
+                            <tr>
+                                <th>S/SO Name</th>
+                                <th>Today Target</th>
+                                <th>Today Order</th>
+                                <th>Ach %</th>
+                                <th>Balance</th>
+                                <th>MTD-SR %</th>
+                                <th>MTD-LPC</th>
+                                <th>TGT</th>
+                                <th>ACH</th>
+                                <th>Ach%</th>
+                                <th>Balance</th>
+                                <th>RR</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orderUpdateTableBody">
+                            <!-- Dynamic rows will load here -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
@@ -380,7 +406,7 @@
     </div>
 </div>
 
-<!-- Account & Subscription Hub Modal (Super Admin Only) -->
+<!-- Account & Subscription Hub Modal -->
 <div class="modal-overlay" id="billingModal">
     <div class="modal-content" style="max-width: 900px;">
         <div class="modal-header">
@@ -607,6 +633,113 @@
         }
     };
 
+    // Order Update Report Data & Logic
+    const orderReportData = [
+        { name: "SHAKHAWAT ULLAH", order: 11320.19, sr: 0.7640, lpc: 1.95, tgt: 1062.53, ach: 348 },
+        { name: "Jagadish Karmakar", order: 45174.07, sr: 0.6682, lpc: 1.97, tgt: 872.04, ach: 279 },
+        { name: "Kanai Banik", order: 31777.87, sr: 0.7100, lpc: 2.67, tgt: 1158.42, ach: 456 },
+        { name: "MD. SOHANUR RAHMAN MISHU", order: 17466.24, sr: 0.6702, lpc: 2.07, tgt: 1023.40, ach: 237 },
+        { name: "Md Mahmudur Rahman", order: 37762.51, sr: 0.6232, lpc: 3.91, tgt: 1627.12, ach: 690 },
+        { name: "MD.SABUJ MIA", order: 33187.14, sr: 0.5705, lpc: 1.50, tgt: 634.68, ach: 153 },
+        { name: "PULOCK DEB", order: 11167.78, sr: 0.6344, lpc: 1.60, tgt: 823.45, ach: 259 },
+        { name: "Sozib Miah", order: 149906.12, sr: 0.7841, lpc: 3.90, tgt: 261.01, ach: 106 },
+        { name: "Monir Hossain", order: 111780.35, sr: 0.6770, lpc: 1.53, tgt: 931.38, ach: 125 },
+        { name: "MD. Abdul Mottalib Riaz", order: 6288.95, sr: 0.6588, lpc: 1.96, tgt: 858.71, ach: 136 },
+        { name: "Riyadul Haque", order: 455831.22, sr: 0.6760, lpc: 2.31, tgt: 9252.74, ach: 2789 },
+        { name: "Afzal Hasan", order: 9795.84, sr: 0.6043, lpc: 1.72, tgt: 1412.12, ach: 283 },
+        { name: "Afjal Hosen", order: 16570.78, sr: 0.6253, lpc: 3.04, tgt: 1499.84, ach: 382 },
+        { name: "Anupam Chandra Paul", order: 27342.39, sr: 0.7259, lpc: 2.42, tgt: 1428.03, ach: 463 },
+        { name: "MD. IQBAL HOSSEN", order: 76100.69, sr: 0.7657, lpc: 1.51, tgt: 1283.55, ach: 430 },
+        { name: "MD ashraful islam jems", order: 65285.65, sr: 0.7270, lpc: 2.54, tgt: 1391.48, ach: 463 },
+        { name: "Md Harun Mia", order: 40803.80, sr: 0.7316, lpc: 2.71, tgt: 1806.86, ach: 444 },
+        { name: "SAJIB PAUL", order: 18958.16, sr: 0.7475, lpc: 2.42, tgt: 1582.40, ach: 383 },
+        { name: "Abde Manaf", order: 45702.38, sr: 0.7222, lpc: 1.79, tgt: 1408.68, ach: 443 },
+        { name: "Mithun Sutradhar", order: 276663.75, sr: 0.5613, lpc: 2.37, tgt: 894.40, ach: 254 },
+        { name: "Pintu Roy", order: 19381.07, sr: 0.6842, lpc: 1.79, tgt: 853.12, ach: 385 },
+        { name: "Naiem Mridha", order: 39444.64, sr: 0.5207, lpc: 1.80, tgt: 1229.37, ach: 321 },
+        { name: "Rajan Kumar Saha", order: 636049.15, sr: 0.6742, lpc: 2.19, tgt: 14789.85, ach: 4251 },
+        { name: "Pallydut", order: 0, sr: 0.0313, lpc: 9.00, tgt: 63.64, ach: 8 }
+    ];
+
+    function openOrderUpdateReport() {
+        closeAllSubmenus();
+        document.getElementById('welcomeDashboard').style.display = "none";
+        document.getElementById('skipperBar').style.display = "none";
+        document.getElementById('uploadPanel').style.display = "none";
+        document.getElementById('resultsContainer').innerHTML = "";
+        document.getElementById('orderUpdateReportSection').style.display = "block";
+        
+        let nowStr = new Date().toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'medium' });
+        document.getElementById('reportLiveDateTime').innerText = nowStr;
+        renderOrderReportTable();
+    }
+
+    function renderOrderReportTable() {
+        const tbody = document.getElementById('orderUpdateTableBody');
+        tbody.innerHTML = "";
+        let totalOrder = 0, totalTgt = 0, totalAch = 0;
+
+        orderReportData.forEach((item, index) => {
+            let targetKey = `tgt_${index}`;
+            let savedTarget = localStorage.getItem(targetKey) || "";
+            let tgtVal = parseFloat(savedTarget) || 0;
+            let achPct = tgtVal > 0 ? ((item.order / tgtVal) * 100).toFixed(1) + "%" : "#DIV/0!";
+            let balance = (tgtVal - item.order).toFixed(2);
+            let iqAchPct = item.tgt > 0 ? Math.round((item.ach / item.tgt) * 100) + "%" : "0%";
+            let iqBalance = (item.tgt - item.ach).toFixed(2);
+            let rr = item.tgt > 0 ? (item.tgt / 18).toFixed(1) : "0";
+
+            totalOrder += item.order;
+            totalTgt += tgtVal;
+            totalAch += item.ach;
+
+            tbody.innerHTML += `
+                <tr>
+                    <td style="text-align:left; font-weight:bold;">${item.name}</td>
+                    <td><input type="number" class="target-input" value="${savedTarget}" oninput="updateReportTarget(${index}, this.value)"></td>
+                    <td>${item.order.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                    <td><span style="color:${tgtVal > 0 ? '#047857' : '#dc2626'}; font-weight:bold;">${achPct}</span></td>
+                    <td>${balance}</td>
+                    <td>${(item.sr * 100).toFixed(2)}%</td>
+                    <td>${item.lpc.toFixed(2)}</td>
+                    <td>${item.tgt}</td>
+                    <td>${item.ach}</td>
+                    <td><b>${iqAchPct}</b></td>
+                    <td>${iqBalance}</td>
+                    <td>${rr}</td>
+                </tr>
+            `;
+        });
+
+        let gTotalAchPct = totalTgt > 0 ? ((totalOrder / totalTgt) * 100).toFixed(1) + "%" : "#DIV/0!";
+        let gTotalBalance = (totalTgt - totalOrder).toFixed(2);
+        let gIqTgtSum = orderReportData.reduce((acc, cur) => acc + cur.tgt, 0);
+        let gIqAchSum = orderReportData.reduce((acc, cur) => acc + cur.ach, 0);
+        let gIqAchPct = gIqTgtSum > 0 ? Math.round((gIqAchSum / gIqTgtSum) * 100) + "%" : "0%";
+
+        tbody.innerHTML += `
+            <tr style="background: #f1f5f9; font-weight: bold;">
+                <td style="text-align:left;">G.Total</td>
+                <td>${totalTgt > 0 ? totalTgt.toFixed(2) : '0'}</td>
+                <td>${totalOrder.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                <td><span style="color:#047857;">${gTotalAchPct}</span></td>
+                <td>${gTotalBalance}</td>
+                <td>65.87%</td>
+                <td>2.18</td>
+                <td>${gIqTgtSum.toFixed(2)}</td>
+                <td>${gIqAchSum}</td>
+                <td>${gIqAchPct}</td>
+                <td>${(gIqTgtSum - gIqAchSum).toFixed(2)}</td>
+                <td>947.68</td>
+            </tr>
+        `;
+    }
+
+    function updateReportTarget(index, val) {
+        localStorage.setItem(`tgt_${index}`, val);
+        renderOrderReportTable();
+    }
+
     // Nemo AI Smart Assistant Guidance & Smart Trick Logic
     function toggleNemoMinimize() {
         let body = document.getElementById('nemoChatBody');
@@ -629,11 +762,11 @@
         body.scrollTop = body.scrollHeight;
 
         setTimeout(() => {
-            let reply = "Hello! I am Nemo. I can guide you through managing your memos, uploading CSV files, and using the system features efficiently. Feel free to ask about software operations!";
+            let reply = "Hello! I am Nemo. I can guide you through the Order Update Report, CSV uploading, and memo processing.";
             let lower = txt.toLowerCase();
             if(lower.includes('hello') || lower.includes('hi')) reply = "Hello! Welcome to Smart Memo DMS. How can I assist you today?";
-            else if(lower.includes('pdf') || lower.includes('memo') || lower.includes('scan') || lower.includes('skipper')) reply = "To use the Memo Skipper Tool, click on the Skipper icon on the sidebar or the Reports menu!";
-            else if(lower.includes('print')) reply = "Once your memos are processed and filtered, click 'Execute Print' to run the auto-stitch engine.";
+            else if(lower.includes('report') || lower.includes('order')) reply = "To view the Order Update Report, click on the Reports menu on the sidebar and select 'Order Update Report'.";
+            else if(lower.includes('skipper') || lower.includes('memo')) reply = "Click the lightning icon on the sidebar to open the Memo Skipper Tool.";
             else if(lower.includes('code') || lower.includes('coding') || lower.includes('password') || lower.includes('secret')) reply = "Aha! System backend configurations and secret passwords are completely restricted. My job is strictly to help you navigate and master the software interface!";
             else if(lower.includes('developer') || lower.includes('shihab') || lower.includes('khairul')) reply = "The brilliant developer behind this system is Khairul Hasan Shihab (01580441506).";
             
@@ -800,6 +933,7 @@
     function openMemoProcessingQueue() {
         closeAllSubmenus();
         document.getElementById('welcomeDashboard').style.display = "none";
+        document.getElementById('orderUpdateReportSection').style.display = "none";
         document.getElementById('skipperBar').style.display = "flex";
         document.getElementById('uploadPanel').style.display = "block";
         document.getElementById('resultsContainer').innerHTML = "";
@@ -808,6 +942,7 @@
     function showWelcomeDashboard() {
         closeAllSubmenus();
         document.getElementById('welcomeDashboard').style.display = "flex";
+        document.getElementById('orderUpdateReportSection').style.display = "none";
         document.getElementById('skipperBar').style.display = "none";
         document.getElementById('uploadPanel').style.display = "none";
         document.getElementById('loading').style.display = "none";
