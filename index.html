@@ -25,7 +25,7 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--bg-main); color: var(--text-dark); font-size: 13px; overflow: hidden; }
+        body { background-color: var(--bg-main); color: var(--text-dark); font-size: 13px; overflow: hidden; width: 100vw; height: 100vh; }
 
         /* Login Screen Styles */
         #loginScreen {
@@ -47,24 +47,24 @@
         #loginMsg { margin-top: 15px; font-size: 13px; font-weight: bold; min-height: 20px; }
         .dev-credit { margin-top: 25px; font-size: 11px; color: #94a3b8; }
 
-        #appScreen { display: none; }
+        #appScreen { display: none; width: 100%; height: 100%; }
 
         /* Top Navigation */
         .topbar-1 { background: var(--top-bar-1); color: #e0e7ff; height: 25px; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; font-size: 10px; letter-spacing: 0.5px; text-transform: uppercase; font-weight: bold; }
         .topbar-2 { background: var(--top-bar-2); color: white; height: 40px; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; font-size: 13px; font-weight: 600; box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: relative; z-index: 10; }
-        .layout-container { display: flex; height: calc(100vh - 65px); }
+        .layout-container { display: flex; height: calc(100vh - 65px); width: 100%; overflow: hidden; }
 
-        /* Professional Clean Sidebar (Logo Removed) */
-        .sidebar { width: 90px; background: white; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; padding-top: 20px; z-index: 5; position: relative; overflow-y: auto; }
+        /* Professional Clean Sidebar (Scrollbar Removed & Scale Fixed) */
+        .sidebar { width: 95px; background: white; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; padding-top: 15px; z-index: 5; position: relative; overflow-y: hidden; flex-shrink: 0; }
         
-        .nav-item-wrap { width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 12px; cursor: pointer; padding: 8px 4px; transition: 0.2s; position: relative; }
+        .nav-item-wrap { width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 10px; cursor: pointer; padding: 6px 4px; transition: 0.2s; position: relative; }
         .nav-item-wrap:hover { background: #e0e7ff; }
-        .nav-icon { width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; border-radius: 8px; color: var(--top-bar-1); font-size: 20px; font-weight: bold; background: #f8fafc; border: 1px solid #cbd5e1; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
-        .nav-label { font-size: 11px; font-weight: 700; color: var(--top-bar-1); margin-top: 5px; text-align: center; }
+        .nav-icon { width: 42px; height: 42px; display: flex; justify-content: center; align-items: center; border-radius: 8px; color: var(--top-bar-1); font-size: 20px; font-weight: bold; background: #f8fafc; border: 1px solid #cbd5e1; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+        .nav-label { font-size: 11px; font-weight: 700; color: var(--top-bar-1); margin-top: 4px; text-align: center; }
 
         /* Submenu Popover Panel */
         .nav-submenu-popup {
-            display: none; position: absolute; left: 90px; top: 0; width: 230px; 
+            display: none; position: absolute; left: 95px; top: 0; width: 230px; 
             background: white; border: 1px solid var(--border-color); border-radius: 8px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 1000; animation: slideIn 0.2s ease-in-out;
         }
@@ -74,7 +74,7 @@
         .nav-submenu-link:hover { background: #e0e7ff; color: var(--top-bar-1); }
 
         /* Main Area */
-        .main-content { flex: 1; padding: 25px; overflow-y: auto; background: var(--bg-main); display: flex; flex-direction: column; }
+        .main-content { flex: 1; padding: 25px; overflow-y: auto; overflow-x: hidden; background: var(--bg-main); display: flex; flex-direction: column; height: 100%; }
         #welcomeDashboard { display: flex; justify-content: center; align-items: center; text-align: center; width: 100%; height: 100%; }
         .welcome-title { color: var(--btn-blue); font-size: 32px; font-weight: 700; letter-spacing: 0.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.05); }
 
@@ -213,7 +213,7 @@
     </div>
 
     <div class="layout-container">
-        <!-- Professional Sidebar (Logo Removed, Memo Skipper Tool placed inside Reports submenu) -->
+        <!-- Professional Sidebar (Logo Removed, Scale Fixed & Scrollbar Hidden) -->
         <div class="sidebar" id="sidebarNav" onclick="closeAllSubmenus(event)">
             
             <!-- 1. Reports Menu with Memo Skipper Tool Submenu -->
@@ -228,15 +228,14 @@
                 </div>
             </div>
 
-            <!-- 2. Company Setup Menu with Submenu Popup -->
+            <!-- 2. Setup Menu with Single Submenu containing Developer Setup -->
             <div class="nav-item-wrap" onclick="toggleSubmenu('setupSubmenu', event)">
                 <div class="nav-icon">🏢</div>
                 <div class="nav-label">Setup</div>
                 
                 <div class="nav-submenu-popup" id="setupSubmenu">
-                    <div class="nav-submenu-header">Company Setup</div>
-                    <div class="nav-submenu-link" onclick="showWelcomeDashboard()">Distributor Profile <span>&gt;</span></div>
-                    <div class="nav-submenu-link" onclick="showWelcomeDashboard()">Price & Promotion <span>&gt;</span></div>
+                    <div class="nav-submenu-header">System Setup</div>
+                    <div class="nav-submenu-link" onclick="openDeveloperModal()">Developer Setup <span>&gt;</span></div>
                 </div>
             </div>
 
@@ -246,10 +245,10 @@
                 <div class="nav-label">Settings</div>
             </div>
 
-            <!-- 4. Billing Hub Menu -->
+            <!-- 4. Account Menu (Renamed from Billing) -->
             <div class="nav-item-wrap" onclick="openBillingModal()">
                 <div class="nav-icon" style="color:#10b981;">💳</div>
-                <div class="nav-label">Billing</div>
+                <div class="nav-label">Account</div>
             </div>
 
             <!-- 5. Reload Menu -->
@@ -258,7 +257,7 @@
                 <div class="nav-label">Reload</div>
             </div>
 
-            <!-- 6. Special Developer Details Menu -->
+            <!-- 6. Developer Profile Menu -->
             <div class="nav-item-wrap" onclick="openDeveloperModal()">
                 <div class="nav-icon" style="color:#2563eb; background:#eff6ff;">👨‍💻</div>
                 <div class="nav-label">Developer</div>
@@ -328,7 +327,7 @@
     </div>
 </div>
 
-<!-- Special Developer Details Modal (English Name & Details) -->
+<!-- Special Developer Details Modal -->
 <div class="modal-overlay" id="developerModal">
     <div class="modal-content" style="max-width: 440px; text-align: center; border-top: 5px solid var(--btn-blue);">
         <div class="modal-header">
@@ -376,11 +375,11 @@
     </div>
 </div>
 
-<!-- Billing & Subscription Hub Modal (Super Admin Only) -->
+<!-- Account & Subscription Hub Modal (Super Admin Only) -->
 <div class="modal-overlay" id="billingModal">
     <div class="modal-content" style="max-width: 900px;">
         <div class="modal-header">
-            <span>💳 Billing & Subscription Hub (Super Admin Only)</span>
+            <span>💳 Account & Subscription Hub (Super Admin Only)</span>
             <button class="close-btn" onclick="closeBillingModal()">&times;</button>
         </div>
 
@@ -662,7 +661,7 @@
     function openBillingModal() {
         let currentUser = localStorage.getItem('currentUser') || "";
         if (currentUser !== "linux@ubuntu") {
-            alert("Access Denied! Only Super Admin can access Billing Hub.");
+            alert("Access Denied! Only Super Admin can access Account Hub.");
             return;
         }
         document.getElementById('billingModal').style.display = "flex";
