@@ -1134,10 +1134,24 @@
                         if (rawAlphaForSearch.includes("পেআউট") || rawAlphaForSearch.includes("েপআউট") || rawAlphaForSearch.includes("পআউট") || rawAlphaForSearch.includes("আউট") || /payout/i.test(rawAlphaForSearch) || /p-out/i.test(engBlockStr)) {
                             hasPayout = true;
                         }
+
+                        // 0 টাকা / 0.00 / ০ ডিটেকশন
+                        if (rawAlphaForSearch.includes("০") || rawAlphaForSearch.includes("0.00") || engBlockStr.includes("0.00")) {
+                            amount = 0.0;
+                            isDamage = true;
+                        }
+
                         let allDecimals = [...engBlockStr.matchAll(/(\d+\.\d{1,2})/g)].map(m => parseFloat(m[1]));
-                        if (allDecimals.length > 0) { hasDecimals = true; amount = Math.max(...allDecimals); }
-                        if (rawAlphaForSearch.includes("ক্ষতিগ্রস্থ") || rawAlphaForSearch.includes("ডেমেজ") || rawAlphaForSearch.includes("ড্যামেজ") || /damage/i.test(rawAlphaForSearch)) { 
-                            if (!hasPayout) { isDamage = true; amount = 0.0; }
+                        if (allDecimals.length > 0) { 
+                            hasDecimals = true; 
+                            amount = Math.max(...allDecimals); 
+                        }
+
+                        if (rawAlphaForSearch.includes("ক্ষতিগ্রস্থ") || rawAlphaForSearch.includes("ক্ষতিগ্রস্ত") || rawAlphaForSearch.includes("ডেমেজ") || rawAlphaForSearch.includes("ড্যামেজ") || /damage/i.test(rawAlphaForSearch)) { 
+                            if (!hasPayout) { 
+                                isDamage = true; 
+                                amount = 0.0; 
+                            }
                         } else if (hasDecimals && amount === 0) {
                             if (!hasPayout) isDamage = true; 
                         }
