@@ -1088,7 +1088,7 @@
     }
     function updateFileCount(files) { document.getElementById('fileCount').innerText = files.length > 0 ? `Selected: ${files.length} PDF file(s).` : ''; }
 
-    /* ------------- 3. Core Engine: PDF + Outlet & Payout Detection ------------- */
+    /* ------------- 3. Core Engine: PDF + Threshold & Damage Logic ------------- */
     async function processAllPDFs() {
         const files = fileInput.files;
         if (files.length === 0) { alert("Upload PDF first!"); return; }
@@ -1179,7 +1179,12 @@
 
             groupedMemos = {};
             Object.values(allMemosMap).forEach(memo => {
-                const isSelected = memo.amount >= minPrintAmount || memo.isDamage || memo.hasPayout;
+                // Corrected Logic: 
+                // 1. If amount is greater than or equal to minPrintAmount -> selected = true
+                // 2. BUT if it is Damage (isDamage) or Payout (hasPayout) or 0 amount -> ALWAYS selected (priority)
+                // 3. Otherwise (amount < minPrintAmount) -> skipped = false (unchecked)
+                const isSelected = (memo.amount >= minPrintAmount) || memo.isDamage || memo.hasPayout || (memo.amount === 0);
+
                 if (!groupedMemos[memo.deliveryMan]) groupedMemos[memo.deliveryMan] = [];
                 groupedMemos[memo.deliveryMan].push({ 
                     fileId: memo.fileId, partsData: Array.from(memo.partsSet).join(","), 
@@ -1208,7 +1213,7 @@
             let damageCount = memos.filter(m => m.isDamage && !m.hasPayout).length;
             let payoutCount = memos.filter(m => m.hasPayout).length;
             let validCount = memos.filter(m => !m.isDamage && !m.hasPayout && m.amount >= minPrintAmount).length;
-            let skippedCount = memos.filter(m => !m.isDamage && !m.hasPayout && m.amount < minPrintAmount).length;
+            let skippedCount = memos.filter(m => !m.isDamage && !m.hasPayout && m.amount < minPrintAmount && m.amount > 0).length;
             let printable = memos.filter(m => m.selected); let skipped = memos.filter(m => !m.selected);
             let btnState = printable.length > 0 ? "" : "disabled";
             let tableId = `table_${dmCounter}`; let skipId = `skip_${dmCounter}`; let bodyId = `body_${dmCounter}`; let iconId = `icon_${dmCounter}`;
@@ -1242,7 +1247,7 @@
             printable.forEach(item => {
                 let badgeClass = "status-selected"; let statusText = "Selected";
                 if (item.hasPayout) { badgeClass = "status-payout"; statusText = "Payout (Priority)"; } 
-                else if (item.isDamage) { badgeClass = "status-damage"; statusText = "Damage (0 BDT)"; }
+                else if (item.isDamage || item.amount === 0) { badgeClass = "status-damage"; statusText = "Damage / 0 BDT"; }
                 let amountDisplay = item.isDamage && !item.hasPayout ? "0.00" : item.amount.toLocaleString('en-US', { minimumFractionDigits: 2 });
 
                 html += `<tr>
