@@ -6,7 +6,7 @@
     <title>Smart Memo DMS | Commercial MDM</title>
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- PDF.js Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
@@ -19,157 +19,163 @@
 
     <style>
         :root {
-            --top-bar-1: #283593; --top-bar-2: #3949ab; --bg-main: #f4f6f9;
-            --text-dark: #333333; --text-muted: #6b7280; --border-color: #d1d5db;
-            --btn-blue: #2563eb; --btn-blue-hover: #1d4ed8; --btn-gray: #e5e7eb; --btn-gray-hover: #d1d5db;
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --primary-light: #e0e7ff;
+            --success: #10b981;
+            --success-bg: #ecfdf5;
+            --danger: #ef4444;
+            --danger-bg: #fef2f2;
+            --warning: #f59e0b;
+            --warning-bg: #fffbeb;
+            --bg-main: #f8fafc;
+            --card-bg: #ffffff;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --sidebar-width: 88px;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
         html, body { width: 100%; height: 100%; overflow: hidden; background-color: var(--bg-main); color: var(--text-dark); font-size: 13px; }
 
         /* Login Screen Styles */
         #loginScreen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: linear-gradient(135deg, #283593 0%, #1e40af 100%);
+            background: linear-gradient(135deg, #4f46e5 0%, #312e81 100%);
             display: flex; justify-content: center; align-items: center; z-index: 9999;
         }
         .login-box {
-            background: white; padding: 40px; border-radius: 12px; width: 100%; max-width: 400px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2); text-align: center;
+            background: white; padding: 40px; border-radius: 16px; width: 100%; max-width: 400px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04); text-align: center;
         }
-        .login-box h2 { color: var(--top-bar-1); margin-bottom: 5px; font-size: 22px; }
+        .login-box h2 { color: var(--primary); margin-bottom: 8px; font-size: 24px; font-weight: 700; }
         .login-box p { color: var(--text-muted); margin-bottom: 25px; font-size: 13px; }
-        .login-input { width: 100%; padding: 12px 15px; margin-bottom: 15px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 14px; outline: none; transition: 0.3s;}
-        .login-input:focus { border-color: var(--btn-blue); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
-        .btn-login { width: 100%; background: var(--btn-blue); color: white; border: none; padding: 12px; border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .btn-login:hover { background: var(--btn-blue-hover); }
+        .login-input { width: 100%; padding: 12px 16px; margin-bottom: 16px; border: 1.5px solid var(--border-color); border-radius: 8px; font-size: 14px; outline: none; transition: all 0.2s;}
+        .login-input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); }
+        .btn-login { width: 100%; background: var(--primary); color: white; border: none; padding: 12px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+        .btn-login:hover { background: var(--primary-dark); }
         .btn-login:disabled { background: #93c5fd; cursor: not-allowed; }
-        #loginMsg { margin-top: 15px; font-size: 13px; font-weight: bold; min-height: 20px; }
+        #loginMsg { margin-top: 15px; font-size: 13px; font-weight: 600; min-height: 20px; }
         .dev-credit { margin-top: 25px; font-size: 11px; color: #94a3b8; }
 
         #appScreen { display: none; width: 100%; height: 100%; }
 
         /* Top Navigation */
-        .topbar-1 { background: var(--top-bar-1); color: #e0e7ff; height: 25px; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; font-size: 10px; letter-spacing: 0.5px; text-transform: uppercase; font-weight: bold; }
-        .topbar-2 { background: var(--top-bar-2); color: white; height: 40px; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; font-size: 13px; font-weight: 600; box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: relative; z-index: 10; }
-        .layout-container { display: flex; height: calc(100vh - 65px); width: 100%; overflow: hidden; }
+        .topbar-1 { background: #1e1b4b; color: #c7d2fe; height: 26px; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; font-size: 11px; letter-spacing: 0.5px; font-weight: 600; }
+        .topbar-2 { background: white; color: var(--text-dark); height: 55px; display: flex; justify-content: space-between; align-items: center; padding: 0 24px; font-size: 14px; font-weight: 700; border-bottom: 1px solid var(--border-color); box-shadow: 0 1px 3px rgba(0,0,0,0.02); position: relative; z-index: 10; }
+        .layout-container { display: flex; height: calc(100vh - 81px); width: 100%; overflow: hidden; }
 
-        /* Professional Clean Sidebar */
-        .sidebar { width: 95px; background: white; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; padding-top: 15px; z-index: 5; position: relative; overflow: hidden; flex-shrink: 0; }
+        /* Modern Sidebar */
+        .sidebar { width: var(--sidebar-width); background: white; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; padding-top: 20px; z-index: 5; position: relative; overflow: hidden; flex-shrink: 0; }
         
-        .nav-item-wrap { width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 12px; cursor: pointer; padding: 6px 4px; transition: 0.2s; position: relative; }
-        .nav-item-wrap:hover { background: #e0e7ff; }
-        .nav-icon { width: 42px; height: 42px; display: flex; justify-content: center; align-items: center; border-radius: 8px; color: var(--top-bar-1); font-size: 20px; font-weight: bold; background: #f8fafc; border: 1px solid #cbd5e1; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
-        .nav-label { font-size: 11px; font-weight: 700; color: var(--top-bar-1); margin-top: 4px; text-align: center; }
+        .nav-item-wrap { width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 16px; cursor: pointer; padding: 8px 4px; transition: 0.2s; position: relative; }
+        .nav-item-wrap:hover { background: var(--primary-light); }
+        .nav-icon { width: 44px; height: 44px; display: flex; justify-content: center; align-items: center; border-radius: 12px; color: var(--primary); font-size: 20px; font-weight: bold; background: #f8fafc; border: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0,0,0,0.02); transition: all 0.2s; }
+        .nav-item-wrap:hover .nav-icon { background: white; border-color: var(--primary); }
+        .nav-label { font-size: 11px; font-weight: 600; color: var(--text-muted); margin-top: 6px; text-align: center; }
+        .nav-item-wrap:hover .nav-label { color: var(--primary); }
 
         /* Submenu Popover Panel */
         .nav-submenu-popup {
-            display: none; position: absolute; left: 95px; top: 0; width: 230px; 
-            background: white; border: 1px solid var(--border-color); border-radius: 8px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 1000; animation: slideIn 0.2s ease-in-out;
+            display: none; position: absolute; left: var(--sidebar-width); top: 0; width: 220px; 
+            background: white; border: 1px solid var(--border-color); border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); z-index: 1000; animation: slideIn 0.2s ease-in-out; overflow: hidden;
         }
         @keyframes slideIn { from { opacity: 0; transform: translateX(-5px); } to { opacity: 1; transform: translateX(0); } }
-        .nav-submenu-header { font-size: 13px; font-weight: 700; background: #f8fafc; padding: 10px 14px; border-bottom: 1px solid var(--border-color); color: var(--top-bar-1); }
-        .nav-submenu-link { padding: 10px 14px; font-size: 12px; font-weight: 600; color: #475569; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; }
-        .nav-submenu-link:hover { background: #e0e7ff; color: var(--top-bar-1); }
+        .nav-submenu-header { font-size: 12px; font-weight: 700; background: #f8fafc; padding: 12px 16px; border-bottom: 1px solid var(--border-color); color: var(--text-dark); }
+        .nav-submenu-link { padding: 12px 16px; font-size: 13px; font-weight: 500; color: var(--text-muted); cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; transition: 0.15s; }
+        .nav-submenu-link:hover { background: var(--primary-light); color: var(--primary); font-weight: 600; }
 
         /* Main Area */
-        .main-content { flex: 1; padding: 25px; overflow-y: auto; overflow-x: hidden; background: var(--bg-main); display: flex; flex-direction: column; height: 100%; }
+        .main-content { flex: 1; padding: 30px; overflow-y: auto; overflow-x: hidden; background: var(--bg-main); display: flex; flex-direction: column; height: 100%; }
         #welcomeDashboard { display: flex; justify-content: center; align-items: center; text-align: center; width: 100%; height: 100%; }
-        .welcome-title { color: var(--btn-blue); font-size: 32px; font-weight: 700; letter-spacing: 0.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .welcome-title { color: var(--primary); font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
 
         /* Order Update Report Table Styling */
-        .report-container { display: none; background: white; padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 1px 3px rgba(0,0,0,0.05); width: 100%; animation: smoothFadeIn 0.3s ease-in-out; }
-        .report-header-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px solid var(--top-bar-1); padding-bottom: 10px; }
+        .report-container { display: none; background: white; padding: 24px; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); width: 100%; animation: smoothFadeIn 0.3s ease-in-out; }
+        .report-header-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid var(--bg-main); padding-bottom: 12px; }
         .report-table { width: 100%; border-collapse: collapse; text-align: center; font-size: 12px; }
-        .report-table th { background: var(--top-bar-1); color: white; padding: 8px; border: 1px solid #cbd5e1; font-weight: 600; }
-        .report-table td { padding: 6px 8px; border: 1px solid #cbd5e1; }
+        .report-table th { background: #f8fafc; color: var(--text-dark); padding: 10px; border: 1px solid var(--border-color); font-weight: 600; }
+        .report-table td { padding: 8px 10px; border: 1px solid var(--border-color); color: var(--text-dark); }
         .report-table tr:hover { background: #f8fafc; }
-        .target-input { width: 70px; padding: 4px; text-align: center; border: 1px solid var(--border-color); border-radius: 4px; font-weight: bold; }
+        .target-input { width: 75px; padding: 6px; text-align: center; border: 1px solid var(--border-color); border-radius: 6px; font-weight: 600; font-size: 12px; outline: none; }
+        .target-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
 
         /* Upload Panel */
-        .filter-panel { display: none; background: white; border: 1px solid var(--border-color); padding: 20px; margin-bottom: 20px; border-top: 3px solid var(--top-bar-2); box-shadow: 0 1px 3px rgba(0,0,0,0.05); width: 100%; animation: smoothFadeIn 0.5s ease-in-out; }
+        .filter-panel { display: none; background: white; border: 1px solid var(--border-color); padding: 24px; margin-bottom: 24px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); width: 100%; animation: smoothFadeIn 0.3s ease-in-out; }
         @keyframes smoothFadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .filter-panel-title { font-size: 14px; font-weight: 700; color: var(--top-bar-1); margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; }
-        .filter-grid { display: flex; gap: 15px; align-items: flex-end; }
-        .form-group { display: flex; flex-direction: column; gap: 5px; flex: 1; }
-        .form-group label { font-size: 11px; color: var(--text-muted); font-weight: 600; }
-        .form-control { border: 1px solid var(--border-color); padding: 8px 10px; font-size: 12px; border-radius: 4px; outline: none; width: 100%; }
-        .drop-zone { border: 1.5px dashed var(--top-bar-2); background: #f8fafc; padding: 10px; text-align: center; border-radius: 4px; cursor: pointer; font-size: 13px; color: var(--top-bar-2); font-weight: 600; transition: 0.2s; }
-        .drop-zone:hover { background: #e0e7ff; }
+        .filter-panel-title { font-size: 15px; font-weight: 700; color: var(--text-dark); margin-bottom: 16px; }
+        .filter-grid { display: flex; gap: 20px; align-items: flex-end; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+        .form-group label { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+        .form-control { border: 1.5px solid var(--border-color); padding: 10px 14px; font-size: 13px; border-radius: 8px; outline: none; width: 100%; transition: border-color 0.2s; }
+        .form-control:focus { border-color: var(--primary); }
+        .drop-zone { border: 2px dashed #cbd5e1; background: #f8fafc; padding: 20px; text-align: center; border-radius: 10px; cursor: pointer; font-size: 13px; color: var(--primary); font-weight: 600; transition: all 0.2s; }
+        .drop-zone:hover { background: var(--primary-light); border-color: var(--primary); }
         
         /* Buttons */
-        .btn-action { background: var(--btn-blue); color: white; border: none; padding: 9px 15px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; }
-        .btn-action:hover { background: var(--btn-blue-hover); }
-        .btn-secondary { background: var(--btn-gray); color: #374151; border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600; }
-        .btn-secondary:hover { background: var(--btn-gray-hover); }
-        .btn-upload { background: #10b981; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600; }
-        .btn-upload:hover { background: #059669; }
+        .btn-action { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600; transition: background 0.2s; }
+        .btn-action:hover { background: var(--primary-dark); }
+        .btn-secondary { background: #f1f5f9; color: var(--text-dark); border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 600; transition: all 0.2s; }
+        .btn-secondary:hover { background: #e2e8f0; }
 
-        /* Accordion & Tables */
-        .dm-section { margin-bottom: 15px; background: white; border: 1px solid var(--border-color); border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); width: 100%; animation: smoothFadeIn 0.5s ease-in-out; }
-        .dm-header-wrap { padding: 15px; border-bottom: 1px solid var(--border-color); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        /* Modern Accordion & Cards */
+        .dm-section { margin-bottom: 20px; background: white; border: 1px solid var(--border-color); border-radius: 14px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); width: 100%; overflow: hidden; animation: smoothFadeIn 0.3s ease-in-out; }
+        .dm-header-wrap { padding: 18px 24px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: white; transition: background 0.2s; }
         .dm-header-wrap:hover { background: #f8fafc; }
-        .dm-title { font-size: 15px; font-weight: 700; color: var(--top-bar-1); margin-bottom: 8px; }
+        .dm-title { font-size: 16px; font-weight: 700; color: var(--text-dark); margin-bottom: 10px; }
         
         .stat-row { display: flex; gap: 10px; font-size: 12px; flex-wrap: wrap; }
-        .stat-pill { background: #f3f4f6; padding: 4px 10px; border-radius: 20px; font-weight: 600; color: var(--text-dark); border: 1px solid #e5e7eb; }
-        .stat-pill.valid { background: #d1fae5; color: #047857; border-color: #a7f3d0; }
+        .stat-pill { background: #f1f5f9; padding: 5px 12px; border-radius: 20px; font-weight: 600; color: var(--text-dark); border: 1px solid var(--border-color); display: flex; align-items: center; gap: 6px; }
+        .stat-pill.valid { background: var(--success-bg); color: var(--success); border-color: #a7f3d0; }
         .stat-pill.damage { background: #e0f2fe; color: #0369a1; border-color: #bae6fd; }
-        .stat-pill.payout { background: #fef08a; color: #854d0e; border-color: #fde047; }
-        .stat-pill.skip { background: #fee2e2; color: #b91c1c; border-color: #fecaca; }
+        .stat-pill.payout { background: var(--warning-bg); color: #b45309; border-color: #fde68a; }
+        .stat-pill.skip { background: var(--danger-bg); color: var(--danger); border-color: #fecaca; }
 
-        .table-container { max-width: 95% ; margin: 15px auto; background: white; border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; }
-        .table-toolbar { padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; background: #fdfdfd; border-bottom: 1px solid var(--border-color); }
+        .table-container { margin: 20px; background: white; border: 1px solid var(--border-color); border-radius: 10px; overflow: hidden; }
+        .table-toolbar { padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; background: #f8fafc; border-bottom: 1px solid var(--border-color); }
         
-        .status-badge { padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: 700; white-space: nowrap; }
-        .status-selected { background: #d1fae5; color: #047857; }
-        .status-dropped { background: #fee2e2; color: #b91c1c; }
+        .status-badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; white-space: nowrap; display: inline-block; }
+        .status-selected { background: var(--success-bg); color: var(--success); }
+        .status-dropped { background: var(--danger-bg); color: var(--danger); }
         .status-damage { background: #e0f2fe; color: #0369a1; }
-        .status-payout { background: #fef08a; color: #854d0e; border: 1px solid #fde047; }
-        .checkbox-custom { accent-color: var(--btn-blue); width: 14px; height: 14px; cursor: pointer; }
-        .skipped-panel { display: none; max-width: 95%; margin: 0 auto 15px auto; background: #fafafa; border: 1px solid var(--border-color); border-radius: 6px; }
+        .status-payout { background: var(--warning-bg); color: #b45309; border: 1px solid #fde68a; }
+        
+        .checkbox-custom { accent-color: var(--primary); width: 16px; height: 16px; cursor: pointer; border-radius: 4px; }
+        
+        /* Modern Tab Switching for Valid & Skipped Memos */
+        .tab-nav { display: flex; gap: 8px; border-bottom: 1px solid var(--border-color); padding: 0 20px; background: #f8fafc; }
+        .tab-btn { padding: 12px 18px; background: none; border: none; font-weight: 600; font-size: 13px; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; }
+        .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); background: white; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
 
         /* Tom & Jerry Chase Live Loading Screen */
-        #loading { display: none; text-align: center; margin: 40px 0; width: 100%; animation: smoothFadeIn 0.3s ease-in-out; }
-        .loading-card { background: white; max-width: 450px; margin: 0 auto; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); border-top: 4px solid var(--btn-blue); text-align: center; }
+        #loading { display: none; text-align: center; margin: 60px 0; width: 100%; animation: smoothFadeIn 0.3s ease-in-out; }
+        .loading-card { background: white; max-width: 450px; margin: 0 auto; padding: 35px; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); border-top: 4px solid var(--primary); text-align: center; }
         
-        .chase-container { position: relative; width: 100%; height: 70px; margin: 15px 0; background: #f8fafc; border-radius: 8px; overflow: hidden; border: 1px dashed #cbd5e1; }
-        .runner { position: absolute; top: 15px; font-size: 28px; animation: runChase 2s linear infinite; }
+        .chase-container { position: relative; width: 100%; height: 70px; margin: 20px 0; background: #f8fafc; border-radius: 10px; overflow: hidden; border: 1px dashed var(--border-color); }
+        .runner { position: absolute; top: 18px; font-size: 28px; animation: runChase 2s linear infinite; }
         #jerry { animation-delay: 0s; }
         #tom { animation-delay: 0.1s; font-size: 32px; }
         @keyframes runChase { 0% { left: -40px; } 100% { left: 420px; } }
 
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { background: white; padding: 25px; border-radius: 8px; width: 95%; max-width: 850px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
-        .modal-header { font-size: 16px; font-weight: 700; color: var(--top-bar-1); margin-bottom: 15px; display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
-        .close-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-muted); }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: white; padding: 30px; border-radius: 16px; width: 95%; max-width: 850px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15); max-height: 90vh; overflow-y: auto; }
+        .modal-header { font-size: 18px; font-weight: 700; color: var(--text-dark); margin-bottom: 20px; display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 14px; align-items: center; }
+        .close-btn { background: #f1f5f9; border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; color: var(--text-muted); display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .close-btn:hover { background: #e2e8f0; color: var(--text-dark); }
 
         /* Settings Submenu Styling */
-        .settings-tab-nav { display: flex; gap: 5px; border-bottom: 2px solid var(--border-color); margin-bottom: 15px; flex-wrap: wrap; }
-        .settings-tab-btn { padding: 8px 12px; background: #e2e8f0; border: none; border-radius: 4px 4px 0 0; cursor: pointer; font-weight: 600; font-size: 12px; color: var(--text-muted); }
-        .settings-tab-btn.active { background: var(--top-bar-1); color: white; }
+        .settings-tab-nav { display: flex; gap: 8px; border-bottom: 1px solid var(--border-color); margin-bottom: 20px; flex-wrap: wrap; }
+        .settings-tab-btn { padding: 10px 16px; background: #f1f5f9; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; color: var(--text-muted); transition: all 0.2s; }
+        .settings-tab-btn.active { background: var(--primary); color: white; }
         .settings-tab-content { display: none; }
         .settings-tab-content.active { display: block; }
-
-        /* Nemo AI Smart Assistant Chatbot Widget */
-        #nemoChatWidget {
-            position: fixed; bottom: 55px; right: 25px; width: 280px; height: 420px;
-            background: white; border: 1px solid #cbd5e1; border-radius: 10px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 999; display: flex; flex-direction: column; overflow: hidden;
-            animation: smoothFadeIn 0.3s ease-in-out;
-        }
-        .nemo-header { background: var(--top-bar-1); color: white; padding: 10px 14px; font-size: 13px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
-        .nemo-body { flex: 1; padding: 12px; overflow-y: auto; font-size: 12px; background: #f8fafc; display: flex; flex-direction: column; gap: 10px; }
-        .nemo-msg { padding: 8px 10px; border-radius: 6px; max-width: 90%; line-height: 1.4; }
-        .nemo-msg.bot { background: #e0e7ff; color: #1e3a8a; align-self: flex-start; }
-        .nemo-msg.user { background: #2563eb; color: white; align-self: flex-end; }
-        .nemo-footer { padding: 10px; background: white; border-top: 1px solid #e2e8f0; display: flex; gap: 6px; }
-        .nemo-input { flex: 1; border: 1px solid #cbd5e1; padding: 6px 10px; font-size: 12px; border-radius: 4px; outline: none; }
-        .nemo-send { background: var(--btn-blue); color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 12px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -197,12 +203,12 @@
         <div>Smart Memo MDM | <span id="displayHouseName" style="color:#a5b4fc;"></span></div>
     </div>
     <div class="topbar-2">
-        <div>BACKOFFICE</div>
-        <div style="font-weight: 400; font-size: 12px; display: flex; align-items: center; gap:15px;">
-            <span id="subRemaining" style="color: #fef08a; font-weight: 600;"></span>
-            <span id="liveClock">Loading Time...</span>
-            <span style="color:#93c5fd;">|</span>
-            <span onclick="logoutSystem()" style="cursor: pointer; background: #ef4444; color: white; padding: 4px 10px; border-radius: 4px; font-weight: bold; transition: 0.2s;" onmouseover="this.style.background='#dc2626'" onmouseout="this.style.background='#ef4444'">Logout 🔒</span>
+        <div style="font-weight: 700; color: var(--text-dark);">BACKOFFICE DASHBOARD</div>
+        <div style="font-weight: 500; font-size: 13px; display: flex; align-items: center; gap:16px;">
+            <span id="subRemaining" style="color: var(--primary); font-weight: 700; background: var(--primary-light); padding: 4px 10px; border-radius: 20px;"></span>
+            <span id="liveClock" style="color: var(--text-muted);">Loading Time...</span>
+            <span style="color: var(--border-color);">|</span>
+            <span onclick="logoutSystem()" style="cursor: pointer; background: var(--danger-bg); color: var(--danger); padding: 6px 14px; border-radius: 8px; font-weight: 600; transition: 0.2s;" onmouseover="this.style.background='#fee2e2'" onmouseout="this.style.background='#fef2f2'">Logout 🔒</span>
         </div>
     </div>
 
@@ -233,13 +239,13 @@
                 </div>
             </div>
 
-            <!-- 3. Settings Menu (Locked for regular users) -->
+            <!-- 3. Settings Menu -->
             <div class="nav-item-wrap" onclick="checkSettingsAccess()">
                 <div class="nav-icon">⚙</div>
                 <div class="nav-label">Settings</div>
             </div>
 
-            <!-- 4. Account Menu (Locked for regular users) -->
+            <!-- 4. Account Menu -->
             <div class="nav-item-wrap" onclick="openBillingModal()">
                 <div class="nav-icon" style="color:#10b981;">💳</div>
                 <div class="nav-label">Account</div>
@@ -251,15 +257,15 @@
                 <div class="nav-label">Reload</div>
             </div>
 
-            <!-- 6. Memo Skipper Tool Button (Open for all) -->
+            <!-- 6. Memo Skipper Tool Button -->
             <div class="nav-item-wrap" onclick="openMemoProcessingQueue()">
-                <div class="nav-icon" style="color:#ef4444; background:#fef2f2;">⚡</div>
+                <div class="nav-icon" style="color:var(--danger); background:var(--danger-bg);">⚡</div>
                 <div class="nav-label">Skipper</div>
             </div>
 
-            <!-- 7. Developer Profile Menu (Open for all) -->
+            <!-- 7. Developer Profile Menu -->
             <div class="nav-item-wrap" onclick="openDeveloperModal()">
-                <div class="nav-icon" style="color:#2563eb; background:#eff6ff;">👨‍💻</div>
+                <div class="nav-icon" style="color:var(--primary); background:var(--primary-light);">👨‍💻</div>
                 <div class="nav-label">Developer</div>
             </div>
 
@@ -270,25 +276,19 @@
                 <h1 class="welcome-title">Welcome S-SMART TECHNOLOGIES</h1>
             </div>
 
-            <!-- Red X Shortcut Trigger Bar for Memo Skipper Tool -->
-            <div class="skipper-trigger-bar" id="skipperBar" style="display: none;">
-                <div style="font-weight: 700; color: var(--top-bar-1);">Memo Skipper Tool Quick Access</div>
-                <button class="red-x-btn" onclick="openMemoProcessingQueue()" title="Open Memo Skipper Tool">✕</button>
-            </div>
-
             <!-- Upload Panel -->
             <div class="filter-panel" id="uploadPanel">
-                <div class="filter-panel-title">1. Upload PDF Files (Memo Processing Queue)</div>
+                <div class="filter-panel-title">Upload PDF Files (Memo Processing Queue)</div>
                 <div class="filter-grid">
                     <div class="form-group" style="flex: 2;">
                         <div class="drop-zone" id="dropZone" onclick="document.getElementById('pdfInput').click()">
                             📁 Click here or Drag & Drop PDF files (e.g. 7.pdf, 86.pdf)
                         </div>
                         <input type="file" id="pdfInput" accept="application/pdf" multiple style="display:none;" onchange="updateFileCount(this.files)">
-                        <div id="fileCount" style="font-size: 11px; color: var(--btn-blue); margin-top: 5px; font-weight:bold;"></div>
+                        <div id="fileCount" style="font-size: 12px; color: var(--primary); margin-top: 6px; font-weight:600;"></div>
                     </div>
                     <div class="form-group" style="flex: 1;">
-                        <button class="btn-action" onclick="processAllPDFs()" style="height: 38px; width: 100%;">⟳ Scan & Process Memos</button>
+                        <button class="btn-action" onclick="processAllPDFs()" style="height: 44px; width: 100%;">⟳ Scan & Process Memos</button>
                     </div>
                 </div>
             </div>
@@ -296,8 +296,8 @@
             <!-- Order Update Report Section Container -->
             <div class="report-container" id="orderUpdateReportSection">
                 <div class="report-header-title">
-                    <h3 style="color: var(--top-bar-1); font-size: 16px;">📈 Order Update Report</h3>
-                    <div style="font-size: 12px; font-weight: 600; color: var(--text-muted);" id="reportLiveDateTime"></div>
+                    <h3 style="color: var(--text-dark); font-size: 18px; font-weight: 700;">📈 Order Update Report</h3>
+                    <div style="font-size: 13px; font-weight: 600; color: var(--text-muted);" id="reportLiveDateTime"></div>
                 </div>
                 <div style="overflow-x: auto;">
                     <table class="report-table">
@@ -327,14 +327,14 @@
             <!-- Tom & Jerry Loading Screen -->
             <div id="loading">
                 <div class="loading-card">
-                    <h3 style="color: var(--top-bar-1); margin-bottom: 5px; font-size: 16px;">Processing Memos...</h3>
-                    <p id="loadingText" style="color: var(--text-muted); font-size: 11px;">Scanning files & matching MDM</p>
+                    <h3 style="color: var(--text-dark); margin-bottom: 6px; font-size: 18px; font-weight: 700;">Processing Memos...</h3>
+                    <p id="loadingText" style="color: var(--text-muted); font-size: 13px;">Scanning files & matching MDM</p>
                     
                     <div class="chase-container">
                         <div class="runner" id="jerry">🐭</div>
                         <div class="runner" id="tom">🐱</div>
                     </div>
-                    <div style="font-size: 11px; color: #64748b; font-style: italic;">Tom is chasing Jerry through the database! 🏃‍♂️💨</div>
+                    <div style="font-size: 12px; color: var(--text-muted); font-style: italic;">Tom is chasing Jerry through the database! 🏃‍♂️💨</div>
                 </div>
             </div>
             
@@ -344,40 +344,39 @@
 </div>
 
 <!-- Nemo AI Smart Assistant Chatbot Widget -->
-<div id="nemoChatWidget">
-    <div class="nemo-header">
+<div id="nemoChatWidget" style="display:none; position: fixed; bottom: 55px; right: 25px; width: 280px; height: 420px; background: white; border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 999; flex-direction: column; overflow: hidden;">
+    <div style="background: var(--primary); color: white; padding: 12px 16px; font-size: 13px; font-weight: bold; display: flex; justify-content: space-between; align-items: center;">
         <span>🤖 Nemo Assistant</span>
         <span style="cursor: pointer; font-size: 14px;" onclick="toggleNemoMinimize()">_</span>
     </div>
-    <div class="nemo-body" id="nemoChatBody">
-        <div class="nemo-msg bot">Hello! I am Nemo. I am here to help you navigate and use the Smart Memo DMS software smoothly. How can I assist you today?</div>
+    <div id="nemoChatBody" style="flex: 1; padding: 14px; overflow-y: auto; font-size: 12px; background: #f8fafc; display: flex; flex-direction: column; gap: 10px;">
+        <div style="background: var(--primary-light); color: var(--primary-dark); padding: 8px 12px; border-radius: 8px; max-width: 90%;">Hello! I am Nemo, your Smart Assistant. How can I help you today?</div>
     </div>
-    <div class="nemo-footer" id="nemoFooterBox">
-        <input type="text" id="nemoInput" class="nemo-input" placeholder="Type here..." onkeypress="if(event.key==='Enter') sendNemoMsg()">
-        <button class="nemo-send" onclick="sendNemoMsg()">Send</button>
+    <div style="padding: 12px; background: white; border-top: 1px solid var(--border-color); display: flex; gap: 8px;">
+        <input type="text" id="nemoInput" style="flex: 1; border: 1px solid var(--border-color); padding: 8px 12px; font-size: 12px; border-radius: 6px; outline: none;" placeholder="Type here..." onkeypress="if(event.key==='Enter') sendNemoMsg()">
+        <button style="background: var(--primary); color: white; border: none; padding: 8px 14px; border-radius: 6px; font-size: 12px; cursor: pointer; font-weight: 600;" onclick="sendNemoMsg()">Send</button>
     </div>
 </div>
 
 <!-- Special Developer Details Modal -->
 <div class="modal-overlay" id="developerModal">
-    <div class="modal-content" style="max-width: 440px; text-align: center; border-top: 5px solid var(--btn-blue);">
+    <div class="modal-content" style="max-width: 440px; text-align: center;">
         <div class="modal-header">
             <span>👨‍💻 Developer Profile</span>
             <button class="close-btn" onclick="closeDeveloperModal()">&times;</button>
         </div>
-        <div style="padding: 25px 20px;">
-            <div style="width: 85px; height: 85px; background: linear-gradient(135deg, #2563eb, #1e40af); color: white; font-size: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin: 0 auto 15px auto; font-weight: bold; box-shadow: 0 4px 10px rgba(37,99,235,0.3);">KS</div>
-            <h2 style="color: var(--top-bar-1); font-size: 20px; margin-bottom: 4px;">Khairul Hasan Shihab</h2>
-            <div style="color: var(--btn-blue); font-weight: 600; font-size: 13px; margin-bottom: 15px;">IT Support Specialist & Software Developer</div>
-            <hr style="border: 0; border-top: 1px solid var(--border-color); margin-bottom: 18px;">
-            <div style="text-align: left; font-size: 13px; color: var(--text-dark); display: flex; flex-direction: column; gap: 10px; background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                <div>📞 <b>Primary Phone:</b> <a href="tel:01580441506" style="color:#2563eb; text-decoration:none;">01580-441506</a></div>
-                <div>📱 <b>Alternative Phone:</b> <a href="tel:01410441506" style="color:#2563eb; text-decoration:none;">01410-441506</a></div>
+        <div style="padding: 10px 0;">
+            <div style="width: 85px; height: 85px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; font-size: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin: 0 auto 16px auto; font-weight: bold; box-shadow: 0 8px 16px rgba(79,70,229,0.25);">KS</div>
+            <h2 style="color: var(--text-dark); font-size: 20px; font-weight: 700; margin-bottom: 4px;">Khairul Hasan Shihab</h2>
+            <div style="color: var(--primary); font-weight: 600; font-size: 13px; margin-bottom: 20px;">IT Support Specialist & Software Developer</div>
+            <div style="text-align: left; font-size: 13px; color: var(--text-dark); display: flex; flex-direction: column; gap: 12px; background: #f8fafc; padding: 18px; border-radius: 12px; border: 1px solid var(--border-color);">
+                <div>📞 <b>Primary Phone:</b> <a href="tel:01580441506" style="color:var(--primary); text-decoration:none;">01580-441506</a></div>
+                <div>📱 <b>Alternative Phone:</b> <a href="tel:01410441506" style="color:var(--primary); text-decoration:none;">01410-441506</a></div>
                 <div>📧 <b>Email:</b> khairulhasansihab@gmail.com</div>
                 <div>🏢 <b>Company:</b> S-SMART TECHNOLOGIES</div>
             </div>
         </div>
-        <button class="btn-action" style="width: 100%;" onclick="closeDeveloperModal()">Close</button>
+        <button class="btn-action" style="width: 100%; margin-top: 20px;" onclick="closeDeveloperModal()">Close</button>
     </div>
 </div>
 
@@ -388,21 +387,21 @@
             <span>📊 Report Corner</span>
             <button class="close-btn" onclick="closeReportModal()">&times;</button>
         </div>
-        <div style="padding: 20px; color: var(--text-muted);">
+        <div style="padding: 20px 0; color: var(--text-muted);">
             <div style="font-size: 40px; margin-bottom: 15px;">🚧</div>
-            <h3 style="color: var(--top-bar-1); margin-bottom: 10px;">Coming Soon!</h3>
+            <h3 style="color: var(--text-dark); margin-bottom: 10px; font-weight: 700;">Coming Soon!</h3>
             <p>Advanced reporting features, analytics, and business insights will be available here soon.</p>
         </div>
-        <button class="btn-action" style="width: 100%; margin-top: 10px;" onclick="closeReportModal()">Close</button>
+        <button class="btn-action" style="width: 100%; margin-top: 15px;" onclick="closeReportModal()">Close</button>
     </div>
 </div>
 
 <!-- Password Modal -->
 <div class="modal-overlay" id="passwordModal">
-    <div class="modal-content" style="max-width: 350px; text-align: center;">
-        <div class="modal-header"><span>🔒 Security Check (Super Admin Password Required)</span><button class="close-btn" onclick="closePasswordModal()">&times;</button></div>
-        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">This area is locked for regular users. Enter Super Admin password to access.</p>
-        <input type="password" id="adminPassword" class="form-control" placeholder="Enter Password" style="margin-bottom: 15px; text-align: center; letter-spacing: 2px;" onkeypress="if(event.key === 'Enter') verifySettingsPassword()">
+    <div class="modal-content" style="max-width: 360px; text-align: center;">
+        <div class="modal-header"><span>🔒 Security Check</span><button class="close-btn" onclick="closePasswordModal()">&times;</button></div>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 20px;">This area is locked. Enter Super Admin password to access.</p>
+        <input type="password" id="adminPassword" class="form-control" placeholder="Enter Password" style="margin-bottom: 20px; text-align: center; letter-spacing: 2px;" onkeypress="if(event.key === 'Enter') verifySettingsPassword()">
         <button class="btn-action" style="width: 100%;" onclick="verifySettingsPassword()">Submit</button>
     </div>
 </div>
@@ -423,15 +422,13 @@
         </div>
 
         <div id="billTabStatus" class="settings-tab-content active">
-            <div style="background: #f8fafc; padding: 15px; border: 1px solid #e2e8f0; border-radius: 6px;">
-                <div style="font-size: 13px; font-weight: 700; color: var(--top-bar-1); margin-bottom: 10px;">Active Clients & Expiry Status Overview</div>
+            <div style="background: #f8fafc; padding: 20px; border: 1px solid var(--border-color); border-radius: 12px;">
+                <div style="font-size: 14px; font-weight: 700; color: var(--text-dark); margin-bottom: 14px;">Active Clients & Expiry Status Overview</div>
                 <div style="max-height: 250px; overflow-y: auto;">
-                    <table style="width: 100%;">
-                        <thead><tr><th>Client House ID</th><th>Expiry Date</th><th>Status</th></tr></thead>
+                    <table style="width: 100%; text-align: left; font-size: 13px;">
+                        <thead><tr style="border-bottom: 1px solid var(--border-color);"><th style="padding: 8px;">Client House ID</th><th style="padding: 8px;">Expiry Date</th><th style="padding: 8px;">Status</th></tr></thead>
                         <tbody id="clientStatusTableBody">
-                            <tr><td>habiganj_house</td><td>2026-11-30</td><td><span class="status-badge status-selected">Active</span></td></tr>
-                            <tr><td>moulvibazar_house</td><td>2026-10-25</td><td><span class="status-badge status-selected">Active</span></td></tr>
-                            <tr><td>kulaura_house</td><td>2026-09-10</td><td><span class="status-badge status-dropped">Expired</span></td></tr>
+                            <tr><td style="padding: 8px;">habiganj_house</td><td style="padding: 8px;">2026-11-30</td><td style="padding: 8px;"><span class="status-badge status-selected">Active</span></td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -439,15 +436,13 @@
         </div>
 
         <div id="billTabExtend" class="settings-tab-content">
-            <div style="background: #eff6ff; padding: 20px; border: 1px solid #bfdbfe; border-radius: 6px;">
-                <div style="font-size: 14px; font-weight: 700; color: var(--top-bar-1); margin-bottom: 10px;">➕ Modify Subscription Days</div>
+            <div style="background: var(--primary-light); padding: 20px; border: 1px solid #c7d2fe; border-radius: 12px;">
+                <div style="font-size: 14px; font-weight: 700; color: var(--primary-dark); margin-bottom: 14px;">➕ Modify Subscription Days</div>
                 <div style="display: flex; gap: 15px; align-items: flex-end; flex-wrap: wrap;">
                     <div class="form-group">
                         <label>Select Client ID</label>
                         <select id="billClientSelect" class="form-control">
                             <option value="habiganj_house">Habiganj House</option>
-                            <option value="moulvibazar_house">Moulvibazar House</option>
-                            <option value="kulaura_house">Kulaura House</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -461,45 +456,29 @@
                         <label>Days Quantity</label>
                         <input type="number" id="billDaysInput" class="form-control" placeholder="e.g. 30">
                     </div>
-                    <button class="btn-action" onclick="updateClientDays()" style="height: 33px; background: #2563eb;">Apply Changes</button>
+                    <button class="btn-action" onclick="updateClientDays()" style="height: 42px;">Apply Changes</button>
                 </div>
             </div>
         </div>
 
         <div id="billTabLedger" class="settings-tab-content">
-            <div style="background: #fdfdfd; padding: 20px; border: 1px dashed var(--border-color); border-radius: 6px;">
-                <div style="font-size: 14px; font-weight: 700; color: var(--top-bar-1); margin-bottom: 10px;">💰 Record Payment & Dues Ledger</div>
+            <div style="background: #f8fafc; padding: 20px; border: 1px solid var(--border-color); border-radius: 12px;">
+                <div style="font-size: 14px; font-weight: 700; color: var(--text-dark); margin-bottom: 14px;">💰 Record Payment & Dues Ledger</div>
                 <div style="display: flex; gap: 15px; align-items: flex-end; flex-wrap: wrap; margin-bottom: 15px;">
                     <div class="form-group"><label>Client Name</label><input type="text" id="ledgerClient" class="form-control" placeholder="House Name"></div>
                     <div class="form-group"><label>Paid Amount (BDT)</label><input type="number" id="ledgerPaid" class="form-control" placeholder="Amount"></div>
                     <div class="form-group"><label>Due Amount (BDT)</label><input type="number" id="ledgerDue" class="form-control" placeholder="Due"></div>
-                    <button class="btn-action" onclick="saveLedgerRecord()" style="height: 33px; background: #10b981;">Save Ledger</button>
-                </div>
-                <div style="max-height: 150px; overflow-y: auto;">
-                    <table style="width: 100%;">
-                        <thead><tr><th>Client</th><th>Paid</th><th>Due</th><th>Date</th></tr></thead>
-                        <tbody id="ledgerTableBody"><tr><td>Habiganj House</td><td>৳ 5,000</td><td>৳ 0</td><td>2026-10-13</td></tr></tbody>
-                    </table>
+                    <button class="btn-action" onclick="saveLedgerRecord()" style="height: 42px; background: #10b981;">Save Ledger</button>
                 </div>
             </div>
         </div>
 
         <div id="billTabReports" class="settings-tab-content">
-            <div style="background: #f0fdf4; padding: 20px; border: 1px solid #bbf7d0; border-radius: 6px; text-align: center;">
-                <div style="font-size: 16px; font-weight: 700; color: #166534; margin-bottom: 10px;">📊 Total Revenue Summary</div>
-                <div style="display: flex; justify-content: center; gap: 30px; margin-top: 15px;">
-                    <div style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #bbf7d0; min-width: 150px;">
-                        <div style="font-size: 11px; color: var(--text-muted);">Total Collection</div>
-                        <div style="font-size: 20px; font-weight: bold; color: #166534;">৳ 25,000</div>
-                    </div>
-                    <div style="background: white; padding: 15px; border-radius: 8px; border: 1px solid #fecaca; min-width: 150px;">
-                        <div style="font-size: 11px; color: var(--text-muted);">Total Due</div>
-                        <div style="font-size: 20px; font-weight: bold; color: #dc2626;">৳ 2,000</div>
-                    </div>
-                </div>
+            <div style="background: var(--success-bg); padding: 20px; border: 1px solid #a7f3d0; border-radius: 12px; text-align: center;">
+                <div style="font-size: 16px; font-weight: 700; color: #065f46; margin-bottom: 10px;">📊 Total Revenue Summary</div>
+                <div style="font-size: 24px; font-weight: bold; color: #047857;">৳ 25,000</div>
             </div>
         </div>
-
     </div>
 </div>
 
@@ -507,7 +486,7 @@
 <div class="modal-overlay" id="settingsModal">
     <div class="modal-content" style="max-width: 850px;">
         <div class="modal-header">
-            <span>⚙ Admin Submenu Control Center (Super Admin Only)</span>
+            <span>⚙ Admin Control Center</span>
             <button class="close-btn" onclick="closeSettings()">&times;</button>
         </div>
 
@@ -519,64 +498,62 @@
         </div>
 
         <div id="tabConfig" class="settings-tab-content active">
-            <div style="background: #f8fafc; padding: 20px; border: 1px solid #e2e8f0; border-radius: 6px;">
-                <div style="font-size: 14px; font-weight: 700; color: var(--top-bar-1); margin-bottom: 15px;">General System Configuration</div>
+            <div style="background: #f8fafc; padding: 20px; border: 1px solid var(--border-color); border-radius: 12px;">
+                <div style="font-size: 14px; font-weight: 700; color: var(--text-dark); margin-bottom: 16px;">General System Configuration</div>
                 <div style="display: flex; gap: 20px; flex-wrap: wrap;">
                     <div class="form-group">
                         <label>House Name</label>
-                        <div style="display:flex; gap:5px;"><input type="text" id="houseNameInput" class="form-control"><button class="btn-action" onclick="saveHouseName()">Save</button></div>
+                        <div style="display:flex; gap:8px;"><input type="text" id="houseNameInput" class="form-control"><button class="btn-action" onclick="saveHouseName()">Save</button></div>
                     </div>
                     <div class="form-group">
                         <label>Target Min Amount (BDT)</label>
-                        <div style="display:flex; gap:5px;"><input type="number" id="minAmountInput" class="form-control"><button class="btn-action" onclick="saveMinAmount()">Save</button></div>
+                        <div style="display:flex; gap:8px;"><input type="number" id="minAmountInput" class="form-control"><button class="btn-action" onclick="saveMinAmount()">Save</button></div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div id="tabClientMgmt" class="settings-tab-content">
-            <div style="background: #f0fdf4; padding: 20px; border: 1px solid #bbf7d0; border-radius: 6px;">
-                <div style="font-size: 14px; font-weight: 700; color: #166534; margin-bottom: 5px;">🏢 Client House Management</div>
-                <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 15px;">Add new houses or select existing ones to manage.</p>
-                <div style="display: flex; gap: 10px; align-items: flex-end; margin-bottom: 15px;">
+            <div style="background: var(--success-bg); padding: 20px; border: 1px solid #a7f3d0; border-radius: 12px;">
+                <div style="font-size: 14px; font-weight: 700; color: #065f46; margin-bottom: 6px;">🏢 Client House Management</div>
+                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">Add new houses or select existing ones to manage.</p>
+                <div style="display: flex; gap: 12px; align-items: flex-end;">
                     <div class="form-group" style="flex: 2;">
-                        <label>Select Target House / Client</label>
+                        <label>Select Target House</label>
                         <select id="targetClientSelect" class="form-control" onchange="onHouseDropdownChange(this.value)">
                             <option value="">-- Choose House --</option>
                         </select>
                     </div>
-                    <div class="form-group" style="flex: 2; display: flex; gap: 5px;">
+                    <div class="form-group" style="flex: 2; display: flex; gap: 8px;">
                         <input type="text" id="newHouseNameInput" class="form-control" placeholder="New House Name">
-                        <button class="btn-action" onclick="addNewHouse()" style="background: #166534; height: 33px;">+ Add House</button>
+                        <button class="btn-action" onclick="addNewHouse()" style="background: #059669; height: 42px;">+ Add</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <div id="tabUploadData" class="settings-tab-content">
-            <div style="background: #eff6ff; padding: 20px; border: 1px solid #bfdbfe; border-radius: 6px;">
-                <div style="font-size: 14px; font-weight: 700; color: #1e40af; margin-bottom: 10px;">📥 Separate Data Upload Hub</div>
-                <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 15px;">Upload Outlet CSV and Delivery Man CSV files independently.</p>
-                
+            <div style="background: var(--primary-light); padding: 20px; border: 1px solid #c7d2fe; border-radius: 12px;">
+                <div style="font-size: 14px; font-weight: 700; color: var(--primary-dark); margin-bottom: 12px;">📥 Separate Data Upload Hub</div>
                 <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-                    <div class="form-group" style="background: white; padding: 15px; border-radius: 6px; border: 1px solid #cbd5e1;">
-                        <label style="font-weight:bold; color:#047857;">🏬 Outlet Master Data (CSV)</label>
-                        <div style="font-size:11px; color:gray; margin-bottom:8px;" id="outletCountDisplay">0 Outlets Loaded</div>
-                        <button class="btn-upload" onclick="document.getElementById('outletCsvInput').click()">📥 Upload Outlet CSV</button>
+                    <div class="form-group" style="background: white; padding: 16px; border-radius: 10px; border: 1px solid var(--border-color);">
+                        <label style="font-weight:bold; color:var(--success);">🏬 Outlet Master Data (CSV)</label>
+                        <div style="font-size:12px; color:var(--text-muted); margin-bottom:10px;" id="outletCountDisplay">0 Outlets Loaded</div>
+                        <button class="btn-action" style="background: var(--success);" onclick="document.getElementById('outletCsvInput').click()">📥 Upload Outlet CSV</button>
                         <input type="file" id="outletCsvInput" accept=".csv" style="display:none;" onchange="uploadOutletCSV(event)">
                     </div>
 
-                    <div class="form-group" style="background: white; padding: 15px; border-radius: 6px; border: 1px solid #cbd5e1; flex: 1;">
-                        <label style="font-weight:bold; color:#1e40af;">👤 Delivery Man List (CSV)</label>
-                        <div style="font-size:11px; color:gray; margin-bottom:8px;">Manage Delivery Roster</div>
-                        <button class="btn-upload" style="background: var(--top-bar-2);" onclick="document.getElementById('dmCsvInput').click()">📥 Upload DM CSV</button>
+                    <div class="form-group" style="background: white; padding: 16px; border-radius: 10px; border: 1px solid var(--border-color); flex: 1;">
+                        <label style="font-weight:bold; color:var(--primary);">👤 Delivery Man List (CSV)</label>
+                        <div style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">Manage Delivery Roster</div>
+                        <button class="btn-action" onclick="document.getElementById('dmCsvInput').click()">📥 Upload DM CSV</button>
                         <input type="file" id="dmCsvInput" accept=".csv" style="display:none;" onchange="uploadDMCSV(event)">
                     </div>
                 </div>
 
-                <div style="max-height: 140px; overflow-y: auto; border: 1px solid var(--border-color); background: white; margin-top: 15px;">
-                    <table style="width: 100%;">
-                        <thead style="position: sticky; top: 0; background: #f9fafb;"><tr><th>Code</th><th>Name</th></tr></thead>
+                <div style="max-height: 140px; overflow-y: auto; border: 1px solid var(--border-color); background: white; margin-top: 15px; border-radius: 8px;">
+                    <table style="width: 100%; text-align: left; font-size: 12px;">
+                        <thead style="position: sticky; top: 0; background: #f8fafc;"><tr><th style="padding: 8px;">Code</th><th style="padding: 8px;">Name</th></tr></thead>
                         <tbody id="dmListBody"></tbody>
                     </table>
                 </div>
@@ -584,17 +561,16 @@
         </div>
 
         <div id="tabClients" class="settings-tab-content">
-            <div style="background: #eff6ff; padding: 20px; border: 1px solid #bfdbfe; border-radius: 6px;">
-                <div style="font-size: 14px; font-weight: 700; color: var(--top-bar-1); margin-bottom: 10px;">☁ New Client ID Creation</div>
-                <div style="display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap;">
+            <div style="background: #f8fafc; padding: 20px; border: 1px solid var(--border-color); border-radius: 12px;">
+                <div style="font-size: 14px; font-weight: 700; color: var(--text-dark); margin-bottom: 14px;">☁ New Client ID Creation</div>
+                <div style="display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap;">
                     <div class="form-group"><label>Client User ID</label><input type="text" id="newSubUser" class="form-control" placeholder="User ID"></div>
                     <div class="form-group"><label>Password</label><input type="password" id="newSubPass" class="form-control" placeholder="Password"></div>
                     <div class="form-group"><label>Expiry Date</label><input type="date" id="newSubExpiry" class="form-control"></div>
-                    <button class="btn-action" onclick="saveSubscriberToFirebase()" style="height: 33px; background: #10b981;">Create Client</button>
+                    <button class="btn-action" onclick="saveSubscriberToFirebase()" style="height: 42px; background: #10b981;">Create Client</button>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 
@@ -665,7 +641,6 @@
     function openOrderUpdateReport() {
         closeAllSubmenus();
         document.getElementById('welcomeDashboard').style.display = "none";
-        document.getElementById('skipperBar').style.display = "none";
         document.getElementById('uploadPanel').style.display = "none";
         document.getElementById('resultsContainer').innerHTML = "";
         document.getElementById('orderUpdateReportSection').style.display = "block";
@@ -741,15 +716,13 @@
         renderOrderReportTable();
     }
 
-    // Nemo AI Smart Assistant Guidance & Smart Trick Logic
     function toggleNemoMinimize() {
         let body = document.getElementById('nemoChatBody');
-        let footer = document.getElementById('nemoFooterBox');
         let widget = document.getElementById('nemoChatWidget');
         if (body.style.display === "none") {
-            body.style.display = "flex"; footer.style.display = "flex"; widget.style.height = "420px";
+            body.style.display = "flex"; widget.style.height = "420px";
         } else {
-            body.style.display = "none"; footer.style.display = "none"; widget.style.height = "36px";
+            body.style.display = "none"; widget.style.height = "36px";
         }
     }
 
@@ -758,25 +731,17 @@
         let txt = input.value.trim();
         if(!txt) return;
         let body = document.getElementById('nemoChatBody');
-        body.innerHTML += `<div class="nemo-msg user">${txt}</div>`;
+        body.innerHTML += `<div style="background: var(--primary); color: white; padding: 8px 12px; border-radius: 8px; max-width: 90%; align-self: flex-end;">${txt}</div>`;
         input.value = "";
         body.scrollTop = body.scrollHeight;
 
         setTimeout(() => {
             let reply = "Hello! I am Nemo. I can guide you through the Order Update Report, CSV uploading, and memo processing.";
-            let lower = txt.toLowerCase();
-            if(lower.includes('hello') || lower.includes('hi')) reply = "Hello! Welcome to Smart Memo DMS. How can I assist you today?";
-            else if(lower.includes('report') || lower.includes('order')) reply = "To view the Order Update Report, click on the Reports menu on the sidebar and select 'Order Update Report'.";
-            else if(lower.includes('skipper') || lower.includes('memo')) reply = "Click the lightning icon on the sidebar to open the Memo Skipper Tool.";
-            else if(lower.includes('code') || lower.includes('coding') || lower.includes('password') || lower.includes('secret')) reply = "Aha! System backend configurations and secret passwords are completely restricted. My job is strictly to help you navigate and master the software interface!";
-            else if(lower.includes('developer') || lower.includes('shihab') || lower.includes('khairul')) reply = "The brilliant developer behind this system is Khairul Hasan Shihab (01580441506).";
-            
-            body.innerHTML += `<div class="nemo-msg bot">${reply}</div>`;
+            body.innerHTML += `<div style="background: var(--primary-light); color: var(--primary-dark); padding: 8px 12px; border-radius: 8px; max-width: 90%; align-self: flex-start;">${reply}</div>`;
             body.scrollTop = body.scrollHeight;
         }, 600);
     }
 
-    // Submenu Popover Toggle
     function toggleSubmenu(menuId, event) {
         event.stopPropagation();
         closeAllSubmenus();
@@ -791,7 +756,6 @@
         submenus.forEach(s => s.style.display = "none");
     }
 
-    // Developer Modal Controls
     function openDeveloperModal() { document.getElementById('developerModal').style.display = "flex"; }
     function closeDeveloperModal() { document.getElementById('developerModal').style.display = "none"; }
 
@@ -827,8 +791,6 @@
         let paid = document.getElementById('ledgerPaid').value.trim();
         let due = document.getElementById('ledgerDue').value.trim();
         if(!client || !paid) { alert("Fill in required fields!"); return; }
-        let tbody = document.getElementById('ledgerTableBody');
-        tbody.innerHTML += `<tr><td>${client}</td><td>৳ ${paid}</td><td>৳ ${due}</td><td>${new Date().toISOString().split('T')[0]}</td></tr>`;
         alert("Ledger saved successfully!");
         document.getElementById('ledgerClient').value = "";
         document.getElementById('ledgerPaid').value = "";
@@ -837,14 +799,16 @@
 
     function populateHouseDropdown() {
         let select = document.getElementById('targetClientSelect');
+        let billSelect = document.getElementById('billClientSelect');
         if(!select) return;
-        select.innerHTML = '<option value="">-- Choose House --</option>';
+        let optionsHtml = '<option value="">-- Choose House --</option>';
         houseList.forEach(house => {
-            let opt = document.createElement('option');
-            opt.value = house;
-            opt.innerText = house.charAt(0).toUpperCase() + house.slice(1) + " House";
-            select.appendChild(opt);
+            let optVal = house;
+            let optText = house.charAt(0).toUpperCase() + house.slice(1) + " House";
+            optionsHtml += `<option value="${optVal}">${optText}</option>`;
         });
+        select.innerHTML = optionsHtml;
+        if(billSelect) billSelect.innerHTML = optionsHtml;
         select.value = activeClientKey;
     }
 
@@ -867,7 +831,7 @@
         let msgBox = document.getElementById('loginMsg');
         let loginBtn = document.getElementById('loginBtn');
 
-        if (!user || !pass) { msgBox.innerHTML = "❌ Enter ID & Password."; msgBox.style.color = "#dc2626"; return; }
+        if (!user || !pass) { msgBox.innerHTML = "❌ Enter ID & Password."; msgBox.style.color = "var(--danger)"; return; }
 
         if (user === "linux@ubuntu" && pass === "Xihab@007") {
             localStorage.setItem('isLoggedIn', 'true');
@@ -893,7 +857,7 @@
                     let expiry = new Date(data.expiryDate);
                     let today = new Date(); today.setHours(0,0,0,0);
                     if (today > expiry) {
-                        msgBox.innerHTML = `❌ Subscription Expired.`; msgBox.style.color = "#dc2626";
+                        msgBox.innerHTML = `❌ Subscription Expired.`; msgBox.style.color = "var(--danger)";
                     } else {
                         let diffDays = Math.ceil(Math.abs(expiry - today) / (1000 * 60 * 60 * 24));
                         document.getElementById('subRemaining').innerText = `⏳ Sub: ${diffDays} Days Left`;
@@ -905,9 +869,9 @@
                         document.getElementById('appScreen').style.display = "block";
                         loadClientDataStorage();
                     }
-                } else { msgBox.innerHTML = "❌ Incorrect Password!"; msgBox.style.color = "#dc2626"; }
-            } else { msgBox.innerHTML = "❌ User ID not found!"; msgBox.style.color = "#dc2626"; }
-        } catch (error) { msgBox.innerHTML = "❌ Connection Error!"; msgBox.style.color = "#dc2626"; }
+                } else { msgBox.innerHTML = "❌ Incorrect Password!"; msgBox.style.color = "var(--danger)"; }
+            } else { msgBox.innerHTML = "❌ User ID not found!"; msgBox.style.color = "var(--danger)"; }
+        } catch (error) { msgBox.innerHTML = "❌ Connection Error!"; msgBox.style.color = "var(--danger)"; }
         finally { loginBtn.innerHTML = "Log In"; loginBtn.disabled = false; }
     }
 
@@ -935,7 +899,6 @@
         closeAllSubmenus();
         document.getElementById('welcomeDashboard').style.display = "none";
         document.getElementById('orderUpdateReportSection').style.display = "none";
-        document.getElementById('skipperBar').style.display = "flex";
         document.getElementById('uploadPanel').style.display = "block";
         document.getElementById('resultsContainer').innerHTML = "";
         fileBuffers = []; groupedMemos = {};
@@ -944,7 +907,6 @@
         closeAllSubmenus();
         document.getElementById('welcomeDashboard').style.display = "flex";
         document.getElementById('orderUpdateReportSection').style.display = "none";
-        document.getElementById('skipperBar').style.display = "none";
         document.getElementById('uploadPanel').style.display = "none";
         document.getElementById('loading').style.display = "none";
         document.getElementById('resultsContainer').innerHTML = "";
@@ -1076,7 +1038,7 @@
         const tbody = document.getElementById('dmListBody'); if(!tbody) return;
         tbody.innerHTML = "";
         Object.keys(currentDeliveryMap).sort((a,b)=>parseInt(a)-parseInt(b)).forEach(code => {
-            tbody.innerHTML += `<tr><td><b>${code}</b></td><td>${currentDeliveryMap[code]}</td></tr>`;
+            tbody.innerHTML += `<tr><td style="padding: 6px;"><b>${code}</b></td><td style="padding: 6px;">${currentDeliveryMap[code]}</td></tr>`;
         });
     }
 
@@ -1173,11 +1135,6 @@
 
             groupedMemos = {};
             Object.values(allMemosMap).forEach(memo => {
-                // FIXED THRESHOLD LOGIC:
-                // 1. Valid Memos: amount >= minPrintAmount AND NOT damage AND NOT payout
-                // 2. Damage / 0 BDT: isDamage OR amount === 0 (and not payout) -> selected (priority)
-                // 3. Payouts -> selected (priority)
-                // 4. Skipped: amount < minPrintAmount AND amount > 0 AND NOT damage AND NOT payout
                 const isSelected = (memo.amount >= minPrintAmount && !memo.isDamage && !memo.hasPayout) || memo.isDamage || memo.hasPayout || (memo.amount === 0);
 
                 if (!groupedMemos[memo.deliveryMan]) groupedMemos[memo.deliveryMan] = [];
@@ -1197,7 +1154,25 @@
         if (el.style.display === "none") { el.style.display = "block"; icon.innerText = "▲"; } 
         else { el.style.display = "none"; icon.innerText = "▼"; }
     }
-    function toggleSkippedPanel(id) { let el = document.getElementById(id); el.style.display = (el.style.display === "none") ? "block" : "none"; }
+
+    function switchTab(dmCounter, tabName) {
+        let validTab = document.getElementById(`tab_valid_${dmCounter}`);
+        let skippedTab = document.getElementById(`tab_skipped_${dmCounter}`);
+        let validBtn = document.getElementById(`btn_valid_${dmCounter}`);
+        let skippedBtn = document.getElementById(`btn_skipped_${dmCounter}`);
+
+        if (tabName === 'valid') {
+            validTab.style.display = 'block';
+            skippedTab.style.display = 'none';
+            validBtn.classList.add('active');
+            skippedBtn.classList.remove('active');
+        } else {
+            validTab.style.display = 'none';
+            skippedTab.style.display = 'block';
+            skippedBtn.classList.add('active');
+            validBtn.classList.remove('active');
+        }
+    }
 
     function renderResultsDCODE() {
         const container = document.getElementById('resultsContainer'); container.innerHTML = "";
@@ -1209,9 +1184,11 @@
             let payoutCount = memos.filter(m => m.hasPayout).length;
             let validCount = memos.filter(m => !m.isDamage && !m.hasPayout && m.amount >= minPrintAmount).length;
             let skippedCount = memos.filter(m => !m.isDamage && !m.hasPayout && m.amount < minPrintAmount && m.amount > 0).length;
-            let printable = memos.filter(m => m.selected); let skipped = memos.filter(m => !m.selected);
+            
+            let printable = memos.filter(m => m.selected); 
+            let skipped = memos.filter(m => !m.selected);
             let btnState = printable.length > 0 ? "" : "disabled";
-            let tableId = `table_${dmCounter}`; let skipId = `skip_${dmCounter}`; let bodyId = `body_${dmCounter}`; let iconId = `icon_${dmCounter}`;
+            let bodyId = `body_${dmCounter}`; let iconId = `icon_${dmCounter}`;
             let payoutPillHtml = payoutCount > 0 ? `<span class="stat-pill payout"><b>Payouts:</b> ${payoutCount}</span>` : '';
 
             let html = `
@@ -1227,45 +1204,72 @@
                                 <span class="stat-pill skip"><b>Skipped:</b> ${skippedCount}</span>
                             </div>
                         </div>
-                        <div id="${iconId}" style="font-weight:bold;">▼</div>
+                        <div id="${iconId}" style="font-weight:bold; color:var(--text-muted);">▼</div>
                     </div>
-                    <div id="${bodyId}" style="display: none; padding-bottom: 15px; background: #fafafa;">
-                        <div class="table-container">
-                            <div class="table-toolbar">
-                                <button class="btn-secondary" onclick="toggleSkippedPanel('${skipId}')">👁 View Skipped (${skippedCount})</button>
-                                <button class="btn-action" onclick="printGroupAutoStitch('${dmName}', this, '${dmCounter}')" ${btnState}>🖨 Execute Print</button>
-                            </div>
-                            <table>
-                                <thead><tr><th>Sel</th><th>Memo No</th><th>Shop Name</th><th>Status</th><th>Amount</th><th>Pages</th></tr></thead>
-                                <tbody>
-            `;
-            printable.forEach(item => {
-                let badgeClass = "status-selected"; let statusText = "Selected";
-                if (item.hasPayout) { badgeClass = "status-payout"; statusText = "Payout (Priority)"; } 
-                else if (item.isDamage || item.amount === 0) { badgeClass = "status-damage"; statusText = "Damage / 0 BDT"; }
-                let amountDisplay = item.isDamage && !item.hasPayout ? "0.00" : item.amount.toLocaleString('en-US', { minimumFractionDigits: 2 });
+                    <div id="${bodyId}" style="display: none; background: #fafafa; border-top: 1px solid var(--border-color);">
+                        
+                        <!-- Modern Tab Nav -->
+                        <div class="tab-nav">
+                            <button class="tab-btn active" id="btn_valid_${dmCounter}" onclick="switchTab(${dmCounter}, 'valid')">Valid & Print Memos (${printable.length})</button>
+                            <button class="tab-btn" id="btn_skipped_${dmCounter}" onclick="switchTab(${dmCounter}, 'skipped')">Skipped Memos List (${skipped.length})</button>
+                        </div>
 
-                html += `<tr>
-                    <td><input type="checkbox" class="cb-${dmCounter} checkbox-custom" data-file="${item.fileId}" data-parts="${item.partsData}" checked></td>
-                    <td><b>${item.memo_no}</b></td><td>${item.outletName || '-'}</td>
-                    <td><span class="status-badge ${badgeClass}">${statusText}</span></td>
-                    <td><b>${amountDisplay}</b></td><td>${item.partsData}</td>
-                </tr>`;
-            });
-            html += `</tbody></table></div>
-                <div id="${skipId}" class="skipped-panel" style="padding:10px;">
-                    <div style="font-weight:bold; color:red; margin-bottom:5px;">⚠️ Skipped Memos (Below ${minPrintAmount})</div>
-                    <table><tbody>`;
-            skipped.forEach(item => {
-                let amountDisplay = item.amount.toLocaleString('en-US', { minimumFractionDigits: 2 });
-                html += `<tr>
-                    <td><input type="checkbox" class="cb-${dmCounter} checkbox-custom" data-file="${item.fileId}" data-parts="${item.partsData}"></td>
-                    <td>${item.memo_no}</td><td>${item.outletName || '-'}</td>
-                    <td><span class="status-badge status-dropped">Skipped</span></td>
-                    <td>${amountDisplay}</td><td>${item.partsData}</td>
-                </tr>`;
-            });
-            html += `</tbody></table></div></div></div>`;
+                        <!-- Tab 1: Valid & Print Memos -->
+                        <div id="tab_valid_${dmCounter}" class="tab-content active" style="padding: 15px;">
+                            <div class="table-container" style="margin:0;">
+                                <div class="table-toolbar">
+                                    <span style="font-weight:600; color:var(--text-muted); font-size:12px;">Ready for Stitching & Printing</span>
+                                    <button class="btn-action" onclick="printGroupAutoStitch('${dmName}', this, '${dmCounter}')" ${btnState}>🖨 Execute Print</button>
+                                </div>
+                                <table>
+                                    <thead><tr><th>Sel</th><th>Memo No</th><th>Shop Name</th><th>Status</th><th>Amount</th><th>Pages</th></tr></thead>
+                                    <tbody>
+            `;
+            if(printable.length === 0) {
+                html += `<tr><td colspan="6" style="padding:20px; color:var(--text-muted);">No printable memos in this section.</td></tr>`;
+            } else {
+                printable.forEach(item => {
+                    let badgeClass = "status-selected"; let statusText = "Selected";
+                    if (item.hasPayout) { badgeClass = "status-payout"; statusText = "Payout (Priority)"; } 
+                    else if (item.isDamage || item.amount === 0) { badgeClass = "status-damage"; statusText = "Damage / 0 BDT"; }
+                    let amountDisplay = item.isDamage && !item.hasPayout ? "0.00" : item.amount.toLocaleString('en-US', { minimumFractionDigits: 2 });
+
+                    html += `<tr>
+                        <td><input type="checkbox" class="cb-${dmCounter} checkbox-custom" data-file="${item.fileId}" data-parts="${item.partsData}" checked></td>
+                        <td><b>${item.memo_no}</b></td><td>${item.outletName || '-'}</td>
+                        <td><span class="status-badge ${badgeClass}">${statusText}</span></td>
+                        <td><b>${amountDisplay}</b></td><td>${item.partsData}</td>
+                    </tr>`;
+                });
+            }
+            html += `</tbody></table></div></div>`;
+
+            // Tab 2: Skipped Memos List (Modern Separate Section)
+            html += `
+                        <div id="tab_skipped_${dmCounter}" class="tab-content" style="padding: 15px;">
+                            <div class="table-container" style="margin:0;">
+                                <div class="table-toolbar" style="background: #fff1f2;">
+                                    <span style="font-weight:600; color:var(--danger); font-size:12px;">⚠️ Skipped Memos (Below Threshold ${minPrintAmount} BDT)</span>
+                                </div>
+                                <table>
+                                    <thead><tr><th>Sel</th><th>Memo No</th><th>Shop Name</th><th>Status</th><th>Amount</th><th>Pages</th></tr></thead>
+                                    <tbody>
+            `;
+            if(skipped.length === 0) {
+                html += `<tr><td colspan="6" style="padding:20px; color:var(--text-muted);">No skipped memos found.</td></tr>`;
+            } else {
+                skipped.forEach(item => {
+                    let amountDisplay = item.amount.toLocaleString('en-US', { minimumFractionDigits: 2 });
+                    html += `<tr>
+                        <td><input type="checkbox" class="cb-${dmCounter} checkbox-custom" data-file="${item.fileId}" data-parts="${item.partsData}"></td>
+                        <td>${item.memo_no}</td><td>${item.outletName || '-'}</td>
+                        <td><span class="status-badge status-dropped">Skipped</span></td>
+                        <td>${amountDisplay}</td><td>${item.partsData}</td>
+                    </tr>`;
+                });
+            }
+            html += `</tbody></table></div></div></div></div>`;
+
             container.innerHTML += html; dmCounter++;
         });
         container.style.display = "block";
@@ -1305,7 +1309,7 @@
                 try { printFrame.contentWindow.focus(); printFrame.contentWindow.print(); } catch(e) { window.open(blobUrl); }
                 setTimeout(() => { btnElement.innerHTML = origText; btnElement.disabled = false; }, 1000);
             };
-        } catch (error) { alert("Print Error!"); btnElement.innerHTML = origTest; btnElement.disabled = false; }
+        } catch (error) { alert("Print Error!"); btnElement.innerHTML = origText; btnElement.disabled = false; }
     }
 </script>
 
