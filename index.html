@@ -1131,14 +1131,13 @@
                         lastMemoNo = currentMemoNo;
 
                         let amount = 0.0, isDamage = false, hasPayout = false, hasDecimals = false;
+                        
                         if (rawAlphaForSearch.includes("পেআউট") || rawAlphaForSearch.includes("েপআউট") || rawAlphaForSearch.includes("পআউট") || rawAlphaForSearch.includes("আউট") || /payout/i.test(rawAlphaForSearch) || /p-out/i.test(engBlockStr)) {
                             hasPayout = true;
                         }
 
-                        // 0 টাকা / 0.00 / ০ ডিটেকশন
-                        if (rawAlphaForSearch.includes("০") || rawAlphaForSearch.includes("0.00") || engBlockStr.includes("0.00")) {
-                            amount = 0.0;
-                            isDamage = true;
+                        if (rawAlphaForSearch.includes("ক্ষতিগ্রস্থ") || rawAlphaForSearch.includes("ক্ষতিগ্রস্ত") || rawAlphaForSearch.includes("ডেমেজ") || rawAlphaForSearch.includes("ড্যামেজ") || /damage/i.test(rawAlphaForSearch)) { 
+                            if (!hasPayout) { isDamage = true; amount = 0.0; }
                         }
 
                         let allDecimals = [...engBlockStr.matchAll(/(\d+\.\d{1,2})/g)].map(m => parseFloat(m[1]));
@@ -1147,13 +1146,8 @@
                             amount = Math.max(...allDecimals); 
                         }
 
-                        if (rawAlphaForSearch.includes("ক্ষতিগ্রস্থ") || rawAlphaForSearch.includes("ক্ষতিগ্রস্ত") || rawAlphaForSearch.includes("ডেমেজ") || rawAlphaForSearch.includes("ড্যামেজ") || /damage/i.test(rawAlphaForSearch)) { 
-                            if (!hasPayout) { 
-                                isDamage = true; 
-                                amount = 0.0; 
-                            }
-                        } else if (hasDecimals && amount === 0) {
-                            if (!hasPayout) isDamage = true; 
+                        if (amount === 0 && !hasPayout) {
+                            isDamage = true;
                         }
 
                         let foundOutletName = "";
@@ -1179,11 +1173,12 @@
 
             groupedMemos = {};
             Object.values(allMemosMap).forEach(memo => {
-                // Corrected Logic: 
-                // 1. If amount is greater than or equal to minPrintAmount -> selected = true
-                // 2. BUT if it is Damage (isDamage) or Payout (hasPayout) or 0 amount -> ALWAYS selected (priority)
-                // 3. Otherwise (amount < minPrintAmount) -> skipped = false (unchecked)
-                const isSelected = (memo.amount >= minPrintAmount) || memo.isDamage || memo.hasPayout || (memo.amount === 0);
+                // FIXED THRESHOLD LOGIC:
+                // 1. Valid Memos: amount >= minPrintAmount AND NOT damage AND NOT payout
+                // 2. Damage / 0 BDT: isDamage OR amount === 0 (and not payout) -> selected (priority)
+                // 3. Payouts -> selected (priority)
+                // 4. Skipped: amount < minPrintAmount AND amount > 0 AND NOT damage AND NOT payout
+                const isSelected = (memo.amount >= minPrintAmount && !memo.isDamage && !memo.hasPayout) || memo.isDamage || memo.hasPayout || (memo.amount === 0);
 
                 if (!groupedMemos[memo.deliveryMan]) groupedMemos[memo.deliveryMan] = [];
                 groupedMemos[memo.deliveryMan].push({ 
@@ -1310,7 +1305,7 @@
                 try { printFrame.contentWindow.focus(); printFrame.contentWindow.print(); } catch(e) { window.open(blobUrl); }
                 setTimeout(() => { btnElement.innerHTML = origText; btnElement.disabled = false; }, 1000);
             };
-        } catch (error) { alert("Print Error!"); btnElement.innerHTML = origText; btnElement.disabled = false; }
+        } catch (error) { alert("Print Error!"); btnElement.innerHTML = origTest; btnElement.disabled = false; }
     }
 </script>
 
