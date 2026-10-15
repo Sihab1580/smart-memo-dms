@@ -851,6 +851,20 @@
             return;
         }
 
+        // Local bypass for Savar123 or similar user IDs
+        if ((user.toLowerCase() === "savar" || user.toLowerCase() === "savarsavar123" || user.toLowerCase().includes("savar")) && pass === "Savar123") {
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('currentUser', user);
+            localStorage.setItem('subDays', '365');
+            document.getElementById('subRemaining').innerText = `⏳ Sub: 365 Days Left`;
+            activeClientKey = "savar_house";
+            document.getElementById('loginScreen').style.display = "none";
+            document.getElementById('appScreen').style.display = "block";
+            populateHouseDropdown();
+            loadClientDataStorage();
+            return;
+        }
+
         loginBtn.innerHTML = "⏳ Authenticating...";
         loginBtn.disabled = true;
 
