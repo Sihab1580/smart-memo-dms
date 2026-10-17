@@ -1107,7 +1107,10 @@
                         let rawAlphaForSearch = blockText.replace(/[^\u0980-\u09FFa-zA-Z]/g, '');
                         let engBlockStr = bengaliToEnglish(blockText).replace(/,/g, '').replace(/(\d)\s*\.\s*(\d)/g, '$1.$2'); 
                         let cleanStrForMemo = engBlockStr.replace(/\s+/g, '');
-                        let memoMatch = cleanStrForMemo.match(/(26000\d{5})/);
+                        
+                        // Updated Regex Pattern to handle 26000, 26001, etc.
+                        let memoMatch = cleanStrForMemo.match(/(2600\d{6})/);
+                        
                         let pNum = (cleanStrForMemo.match(/P(\d+)of(\d+)/i) || [0,1])[1];
                         let currentMemoNo = memoMatch ? memoMatch[1] : (pNum > 1 ? lastMemoNo : (engBlockStr.includes("S-SMART") ? "No_Num_" + Math.floor(Math.random()*10000) : lastMemoNo));
                         lastMemoNo = currentMemoNo;
